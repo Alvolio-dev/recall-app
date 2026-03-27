@@ -15,7 +15,7 @@ const MotionButton: FC<MotionButtonProps> = ({ label, className, onClick }) => {
     <button
       onClick={onClick}
       className={cn(
-        "group relative h-auto w-48 cursor-pointer rounded-full border-none p-1 outline-none bg-[#fafafa]",
+        "group relative h-auto w-48 cursor-pointer rounded-full border border-zinc-200 p-1 outline-none bg-[#fafafa]",
         "focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2",
         className
       )}
