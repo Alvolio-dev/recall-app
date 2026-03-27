@@ -19,7 +19,11 @@ export function Logo({ className, size = "md", variant = "light" }: LogoProps) {
   const isDark = variant === "dark";
 
   return (
-    <div className={cn("flex items-center gap-1.5", className)}>
+    <div className={cn(
+      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1",
+      isDark ? "border-zinc-700 bg-zinc-800/50" : "border-zinc-200 bg-white/80",
+      className
+    )}>
       <div className={cn(
         "rounded-lg flex items-center justify-center",
         s.icon,
