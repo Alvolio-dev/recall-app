@@ -1,18 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { CountUp } from "@/components/ui/count-up";
 
 interface MiniRingProps {
   value: number;
   max: number;
   label: string;
   display: string;
+  countValue?: number;
+  countSuffix?: string;
   color: string;
   gradientTo: string;
   size?: number;
 }
 
-export function MiniRing({ value, max, label, display, color, gradientTo, size = 80 }: MiniRingProps) {
+export function MiniRing({ value, max, label, display, color, gradientTo, size = 80, countValue, countSuffix = "" }: MiniRingProps) {
   const strokeWidth = 6;
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -60,7 +63,9 @@ export function MiniRing({ value, max, label, display, color, gradientTo, size =
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-lg font-bold text-zinc-900">{display}</span>
+          <span className="text-lg font-bold text-zinc-900">
+            {countValue !== undefined ? <CountUp end={countValue} suffix={countSuffix} duration={1.8} /> : display}
+          </span>
         </div>
       </div>
       <span className="text-xs text-zinc-400 font-medium">{label}</span>

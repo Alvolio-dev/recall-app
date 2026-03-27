@@ -61,9 +61,9 @@ export function Digest() {
               </div>
 
               <div className="flex justify-around mb-5 py-2">
-                <MiniRing value={11} max={15} label="videos" display="11" color="#10b981" gradientTo="#34d399" />
-                <MiniRing value={6} max={8} label="saved" display="6h" color="#8b5cf6" gradientTo="#a78bfa" />
-                <MiniRing value={3} max={5} label="themes" display="3" color="#f97316" gradientTo="#fb923c" />
+                <MiniRing value={11} max={15} label="videos" display="11" countValue={11} color="#10b981" gradientTo="#34d399" />
+                <MiniRing value={6} max={8} label="saved" display="6h" countValue={6} countSuffix="h" color="#8b5cf6" gradientTo="#a78bfa" />
+                <MiniRing value={3} max={5} label="themes" display="3" countValue={3} color="#f97316" gradientTo="#fb923c" />
               </div>
 
               <p className="text-sm text-zinc-500 leading-relaxed mb-4">

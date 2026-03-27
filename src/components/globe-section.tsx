@@ -2,14 +2,9 @@
 
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { CountUp } from "@/components/ui/count-up";
 
 const RotatingEarth = dynamic(() => import("@/components/ui/rotating-earth"), { ssr: false });
-
-const stats = [
-  { value: "48K+", label: "summaries created" },
-  { value: "120+", label: "countries" },
-  { value: "26", label: "languages supported" },
-];
 
 export function GlobeSection() {
   return (
@@ -32,12 +27,18 @@ export function GlobeSection() {
             </p>
 
             <div className="flex gap-8">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-2xl font-bold text-zinc-900">{stat.value}</p>
-                  <p className="text-xs text-zinc-400 mt-0.5">{stat.label}</p>
-                </div>
-              ))}
+              <div>
+                <p className="text-2xl font-bold text-zinc-900"><CountUp end={48} suffix="K+" /></p>
+                <p className="text-xs text-zinc-400 mt-0.5">summaries created</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-zinc-900"><CountUp end={120} suffix="+" /></p>
+                <p className="text-xs text-zinc-400 mt-0.5">countries</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-zinc-900"><CountUp end={26} /></p>
+                <p className="text-xs text-zinc-400 mt-0.5">languages supported</p>
+              </div>
             </div>
           </motion.div>
 
