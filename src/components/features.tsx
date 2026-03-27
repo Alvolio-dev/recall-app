@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Clock, Star, ListOrdered, MessageSquare, FolderOpen, Mail, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,12 +82,30 @@ const featureData: FeatureNode[] = [
 
 export function Features() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [rotationAngle, setRotationAngle] = useState(0);
   const [autoRotate, setAutoRotate] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const angleRef = useRef(0);
   const rafRef = useRef<number>(0);
+  const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [, forceUpdate] = useState(0);
+
+  const updatePositions = useCallback(() => {
+    const total = featureData.length;
+    const radius = 180;
+    nodeRefs.current.forEach((node, index) => {
+      if (!node) return;
+      const angle = ((index / total) * 360 + angleRef.current) % 360;
+      const radian = (angle * Math.PI) / 180;
+      const x = radius * Math.cos(radian);
+      const y = radius * Math.sin(radian);
+      const zIndex = Math.round(100 + 50 * Math.cos(radian));
+      const opacity = Math.max(0.5, Math.min(1, 0.5 + 0.5 * ((1 + Math.sin(radian)) / 2)));
+      node.style.transform = `translate(${x}px, ${y}px)`;
+      node.style.zIndex = String(zIndex);
+      node.style.opacity = String(opacity);
+    });
+  }, []);
 
   const handleContainerClick = (e: React.MouseEvent) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -103,12 +121,11 @@ export function Features() {
     } else {
       setExpandedId(id);
       setAutoRotate(false);
-      // Center on node
       const idx = featureData.findIndex((f) => f.id === id);
       const targetAngle = (idx / featureData.length) * 360;
-      const newAngle = 270 - targetAngle;
-      angleRef.current = newAngle;
-      setRotationAngle(newAngle);
+      angleRef.current = 270 - targetAngle;
+      updatePositions();
+      forceUpdate((n) => n + 1);
     }
   };
 
@@ -119,23 +136,13 @@ export function Features() {
       const delta = now - lastTime;
       lastTime = now;
       angleRef.current = (angleRef.current + delta * 0.012) % 360;
-      setRotationAngle(angleRef.current);
+      updatePositions();
       rafRef.current = requestAnimationFrame(animate);
     };
     rafRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [autoRotate]);
+  }, [autoRotate, updatePositions]);
 
-  const getPosition = (index: number) => {
-    const angle = ((index / featureData.length) * 360 + rotationAngle) % 360;
-    const radius = 180;
-    const radian = (angle * Math.PI) / 180;
-    const x = radius * Math.cos(radian);
-    const y = radius * Math.sin(radian);
-    const zIndex = Math.round(100 + 50 * Math.cos(radian));
-    const opacity = Math.max(0.5, Math.min(1, 0.5 + 0.5 * ((1 + Math.sin(radian)) / 2)));
-    return { x, y, zIndex, opacity };
-  };
 
   const getStatusLabel = (status: string) => {
     switch (status) {
@@ -164,7 +171,7 @@ export function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="order-2 md:order-1"
+          className="order-1 md:order-2"
         >
           <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">What it does</p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-zinc-900">
@@ -179,7 +186,7 @@ export function Features() {
         <div
           ref={containerRef}
           onClick={handleContainerClick}
-          className="relative w-full h-[500px] flex items-center justify-center order-1 md:order-2"
+          className="relative w-full h-[500px] flex items-center justify-center order-2 md:order-1"
         >
           <div
             ref={orbitRef}
@@ -197,7 +204,6 @@ export function Features() {
 
             {/* Nodes */}
             {featureData.map((feature, index) => {
-              const pos = getPosition(index);
               const isExpanded = expandedId === feature.id;
               const isRelated = expandedId !== null && featureData.find(f => f.id === expandedId)?.relatedIds.includes(feature.id);
               const Icon = feature.icon;
@@ -205,12 +211,9 @@ export function Features() {
               return (
                 <div
                   key={feature.id}
-                  className="absolute transition-all duration-700 cursor-pointer"
-                  style={{
-                    transform: `translate(${pos.x}px, ${pos.y}px)`,
-                    zIndex: isExpanded ? 200 : pos.zIndex,
-                    opacity: isExpanded ? 1 : pos.opacity,
-                  }}
+                  ref={(el) => { nodeRefs.current[index] = el; }}
+                  className="absolute cursor-pointer"
+                  style={isExpanded ? { zIndex: 200, opacity: 1 } : undefined}
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleItem(feature.id);
