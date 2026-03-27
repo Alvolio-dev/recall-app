@@ -10,7 +10,7 @@ const mainFeatures = [
     description: "A 3-sentence verdict. What the video covers, who it's for, whether it delivers. Decide in 10 seconds.",
     badge: "Popular",
     color: "emerald",
-    example: '"Worth watching if you're into espresso — first 20 min are gold. Skip the grinder section if you already own one."',
+    example: '"Worth watching if you\'re into espresso — first 20 min are gold. Skip the grinder section if you already own one."',
   },
   {
     icon: Star,
