@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Globe } from "lucide-react";
+import { Globe, ArrowRight } from "lucide-react";
 import { HoverButton } from "@/components/ui/hover-button";
 
 export function FinalCta() {
