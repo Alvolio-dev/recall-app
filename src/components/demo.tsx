@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Star, ListOrdered, ArrowRight, Play, MessageSquare, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GlowCard } from "@/components/ui/glow-card";
 
 const modes = [
   { id: "v", label: "Worth my time?", icon: Clock, color: "emerald" },
@@ -166,8 +167,8 @@ export function Demo() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="space-y-3"
         >
+        <GlowCard glowColor="green" className="shadow-lg space-y-3">
           {/* Video meta */}
           <div className="flex items-center gap-4 p-4 bg-white border border-zinc-200 rounded-2xl shadow-sm">
             <div className="w-14 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center flex-shrink-0 shadow-sm shadow-red-200" aria-hidden="true">
@@ -240,6 +241,7 @@ export function Demo() {
             </div>
           </div>
           <p className="text-xs text-zinc-400 text-center">Free: 2 follow-ups per video · Pro: unlimited</p>
+        </GlowCard>
         </motion.div>
         </div>
       </div>
