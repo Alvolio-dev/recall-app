@@ -224,7 +224,7 @@ function TryContent() {
             className="flex flex-col items-center justify-center py-20"
           >
             <Loader2 className="w-8 h-8 text-emerald-600 animate-spin mb-4" />
-            <p className="text-sm text-zinc-500">Fetching video transcript...</p>
+            <p className="text-sm text-zinc-500">Analysing video...</p>
           </motion.div>
         )}
 

@@ -21,7 +21,7 @@ export function Sidebar() {
   return (
     <aside className="hidden md:flex flex-col w-56 border-r border-zinc-200/60 bg-[#fafafa]/80 backdrop-blur-xl h-screen sticky top-0">
       <div className="p-5 pb-4">
-        <Link href="/dashboard">
+        <Link href="/">
           <Logo size="sm" />
         </Link>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { HoverButton } from "@/components/ui/hover-button";
 
@@ -93,9 +94,9 @@ export function Pricing() {
               <span className="text-sm text-zinc-400">forever</span>
             </div>
             <div className="h-5 mb-5" />
-            <button className="w-full py-3 rounded-xl text-sm font-medium bg-white border border-zinc-200 text-zinc-900 hover:bg-zinc-50 transition-colors mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
+            <Link href="/try" className="block w-full py-3 rounded-xl text-sm font-medium bg-white border border-zinc-200 text-zinc-900 hover:bg-zinc-50 transition-colors mb-6 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
               Start summarising
-            </button>
+            </Link>
             <div className="space-y-3">
               {freeFeatures.map((f) => (
                 <div key={f.text} className="flex items-start gap-3">
@@ -131,14 +132,16 @@ export function Pricing() {
             <p className="text-xs text-zinc-500 mb-5 h-5">
               {yearly ? "Billed $23.88/year" : "or $23.88/year, save 33%"}
             </p>
-            <HoverButton
-              className="w-full py-3 text-sm mb-2"
-              backgroundColor="#059669"
-              glowColor="#6ee7b7"
-              hoverTextColor="#d1fae5"
-            >
-              Get Pro
-            </HoverButton>
+            <Link href="/sign-up">
+              <HoverButton
+                className="w-full py-3 text-sm mb-2"
+                backgroundColor="#059669"
+                glowColor="#6ee7b7"
+                hoverTextColor="#d1fae5"
+              >
+                Get Pro
+              </HoverButton>
+            </Link>
             <p className="text-xs text-zinc-400 text-center mb-6">7-day free trial · Cancel anytime</p>
             <div className="space-y-3">
               {proFeatures.map((f) => (

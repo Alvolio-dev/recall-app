@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "@/components/ui/toast";
 import {
   ArrowLeft,
   Clock,
@@ -48,6 +49,8 @@ type SummaryData = Record<string, any>;
 export default function SummaryDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { toast } = useToast();
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [summary, setSummary] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeMode, setActiveMode] = useState<Mode>("verdict");
@@ -72,7 +75,7 @@ export default function SummaryDetailPage() {
       });
   }, [params.id]);
 
-  const updateSummary = async (updates: Partial<SummaryData>) => {
+  const updateSummary = async (updates: Partial<SummaryData>, message?: string) => {
     if (!summary) return;
     const res = await fetch(`/api/summaries/${summary.id}`, {
       method: "PATCH",
@@ -82,6 +85,7 @@ export default function SummaryDetailPage() {
     if (res.ok) {
       const updated = await res.json();
       setSummary(updated);
+      if (message) toast(message);
     }
   };
 
@@ -104,12 +108,13 @@ export default function SummaryDetailPage() {
       const data = await res.json();
       if (data.markdown) {
         const blob = new Blob([data.markdown], { type: "text/markdown" });
-        const url = URL.createObjectURL(blob);
+        const blobUrl = URL.createObjectURL(blob);
         const a = document.createElement("a");
-        a.href = url;
+        a.href = blobUrl;
         a.download = `${summary.title.replace(/[^a-zA-Z0-9]/g, "_").slice(0, 50)}.md`;
         a.click();
-        URL.revokeObjectURL(url);
+        URL.revokeObjectURL(blobUrl);
+        toast("Exported to Markdown");
       }
     } finally {
       setExporting(false);
@@ -118,7 +123,13 @@ export default function SummaryDetailPage() {
 
   const handleDelete = async () => {
     if (!summary) return;
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      setTimeout(() => setConfirmDelete(false), 3000);
+      return;
+    }
     await fetch(`/api/summaries/${summary.id}`, { method: "DELETE" });
+    toast("Summary deleted");
     router.push("/library");
   };
 
@@ -154,7 +165,7 @@ export default function SummaryDetailPage() {
         </Link>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => updateSummary({ isFavorite: !summary.isFavorite })}
+            onClick={() => updateSummary({ isFavorite: !summary.isFavorite }, summary.isFavorite ? "Removed from favorites" : "Added to favorites")}
             className={cn(
               "p-2 rounded-lg border transition-colors",
               summary.isFavorite
@@ -173,7 +184,13 @@ export default function SummaryDetailPage() {
           </button>
           <button
             onClick={handleDelete}
-            className="p-2 rounded-lg border border-zinc-200 text-zinc-400 hover:text-red-500 hover:border-red-200 transition-colors"
+            className={cn(
+              "p-2 rounded-lg border transition-colors",
+              confirmDelete
+                ? "border-red-300 bg-red-50 text-red-500"
+                : "border-zinc-200 text-zinc-400 hover:text-red-500 hover:border-red-200"
+            )}
+            title={confirmDelete ? "Click again to confirm" : "Delete"}
           >
             <Trash2 className="w-4 h-4" />
           </button>

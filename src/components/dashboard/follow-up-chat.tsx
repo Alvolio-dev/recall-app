@@ -15,11 +15,16 @@ interface FollowUpChatProps {
   channel: string;
 }
 
+const FREE_LIMIT = 2;
+
 export function FollowUpChat({ transcript, title, channel }: FollowUpChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [questionCount, setQuestionCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const atLimit = questionCount >= FREE_LIMIT;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -27,7 +32,7 @@ export function FollowUpChat({ transcript, title, channel }: FollowUpChatProps) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || loading) return;
+    if (!input.trim() || loading || atLimit) return;
 
     const question = input.trim();
     setInput("");
@@ -68,6 +73,7 @@ export function FollowUpChat({ transcript, title, channel }: FollowUpChatProps) 
       ]);
     } finally {
       setLoading(false);
+      setQuestionCount((c) => c + 1);
     }
   };
 
@@ -106,29 +112,46 @@ export function FollowUpChat({ transcript, title, channel }: FollowUpChatProps) 
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="p-3 border-t border-zinc-100">
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about this video..."
-            className="flex-1 min-w-0 bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-emerald-400 transition-colors"
-            disabled={loading}
-          />
-          <button
-            type="submit"
-            disabled={loading || !input.trim()}
-            className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center text-white hover:bg-zinc-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
+      {atLimit ? (
+        <div className="p-4 border-t border-zinc-100 text-center">
+          <p className="text-xs text-zinc-500 mb-2">
+            You have used your {FREE_LIMIT} free follow-ups for this video.
+          </p>
+          <a
+            href="/settings"
+            className="text-xs font-medium text-emerald-600 hover:text-emerald-700 transition-colors"
           >
-            {loading ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            ) : (
-              <ArrowRight className="w-3.5 h-3.5" />
-            )}
-          </button>
+            Upgrade to Pro for unlimited →
+          </a>
         </div>
-      </form>
+      ) : (
+        <form onSubmit={handleSubmit} className="p-3 border-t border-zinc-100">
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask about this video..."
+              className="flex-1 min-w-0 bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-emerald-400 transition-colors"
+              disabled={loading}
+            />
+            <button
+              type="submit"
+              disabled={loading || !input.trim()}
+              className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center text-white hover:bg-zinc-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
+            >
+              {loading ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <ArrowRight className="w-3.5 h-3.5" />
+              )}
+            </button>
+          </div>
+          <p className="text-[10px] text-zinc-400 mt-2 text-center">
+            {FREE_LIMIT - questionCount} of {FREE_LIMIT} free follow-ups remaining
+          </p>
+        </form>
+      )}
     </div>
   );
 }
