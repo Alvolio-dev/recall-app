@@ -315,7 +315,7 @@ function TryContent() {
                     Sign up free to save summaries, ask follow-up questions and build your learning library.
                   </p>
                   <Link
-                    href="/sign-up"
+                    href={`/sign-up?redirect_url=${encodeURIComponent(`/new?url=${encodeURIComponent(url)}`)}`}
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:shadow-md hover:shadow-emerald-200/30 transition-all"
                   >
                     Sign up free

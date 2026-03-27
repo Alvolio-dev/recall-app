@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 import { MotionButton } from "@/components/ui/motion-button";
 import { Logo } from "@/components/ui/logo";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const { isSignedIn, isLoaded } = useUser();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-8 h-16 bg-[#fafafa]/80 backdrop-blur-xl border-b border-zinc-200/60">
@@ -24,12 +26,20 @@ export function Nav() {
         <Link href="/blog" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
           Blog
         </Link>
-        <Link href="/sign-in" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
-          Sign in
-        </Link>
-        <Link href="/sign-up">
-          <MotionButton label="Try free" className="ml-2 w-36 bg-transparent" />
-        </Link>
+        {isLoaded && isSignedIn ? (
+          <Link href="/dashboard">
+            <MotionButton label="Dashboard" className="ml-2 w-36 bg-transparent" />
+          </Link>
+        ) : (
+          <>
+            <Link href="/sign-in" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
+              Sign in
+            </Link>
+            <Link href="/sign-up">
+              <MotionButton label="Try free" className="ml-2 w-36 bg-transparent" />
+            </Link>
+          </>
+        )}
       </div>
 
       {/* Mobile toggle */}
@@ -53,12 +63,20 @@ export function Nav() {
           <Link href="/blog" className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
             Blog
           </Link>
-          <Link href="/sign-in" className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
-            Sign in
-          </Link>
-          <Link href="/sign-up" className="text-sm font-medium text-white bg-zinc-900 px-5 py-3 rounded-xl hover:bg-zinc-800 transition-colors mt-1 block text-center">
-            Try free
-          </Link>
+          {isLoaded && isSignedIn ? (
+            <Link href="/dashboard" className="text-sm font-medium text-white bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-3 rounded-xl transition-colors mt-1 block text-center">
+              Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link href="/sign-in" className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
+                Sign in
+              </Link>
+              <Link href="/sign-up" className="text-sm font-medium text-white bg-zinc-900 px-5 py-3 rounded-xl hover:bg-zinc-800 transition-colors mt-1 block text-center">
+                Try free
+              </Link>
+            </>
+          )}
         </div>
       )}
     </nav>

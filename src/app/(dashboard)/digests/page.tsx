@@ -10,7 +10,7 @@ export default function DigestsPage() {
         </p>
       </div>
 
-      <div className="rounded-2xl border-2 border-dashed border-zinc-200 bg-white/50 p-12 text-center">
+      <div className="rounded-2xl bg-white card-shadow p-12 text-center">
         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-violet-200/50">
           <Mail className="w-6 h-6 text-white" />
         </div>
