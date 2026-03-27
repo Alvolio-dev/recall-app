@@ -6,7 +6,7 @@ import { HoverButton } from "@/components/ui/hover-button";
 
 export function FinalCta() {
   return (
-    <section className="relative py-24 px-6 bg-zinc-100 rounded-t-[40px]">
+    <section className="relative py-24 px-6">
       <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-emerald-400/[0.12] blur-[150px] pointer-events-none" />
 
       <motion.div

@@ -171,35 +171,51 @@ export default function RotatingEarth({ width = 500, height = 500, className = "
 
     const rotationTimer = d3.timer(rotate);
 
-    const handleMouseDown = (event: MouseEvent) => {
+    const startDrag = (startX: number, startY: number) => {
       autoRotate = false;
-      const startX = event.clientX;
-      const startY = event.clientY;
       const startRotation: [number, number] = [...rotation];
 
-      const handleMouseMove = (e: MouseEvent) => {
-        rotation[0] = startRotation[0] + (e.clientX - startX) * 0.5;
-        rotation[1] = Math.max(-90, Math.min(90, startRotation[1] - (e.clientY - startY) * 0.5));
+      const onMove = (x: number, y: number) => {
+        rotation[0] = startRotation[0] + (x - startX) * 0.5;
+        rotation[1] = Math.max(-90, Math.min(90, startRotation[1] - (y - startY) * 0.5));
         projection.rotate(rotation);
         render();
       };
 
-      const handleMouseUp = () => {
+      const onEnd = () => {
         document.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseup", handleMouseUp);
+        document.removeEventListener("mouseup", onEnd);
+        document.removeEventListener("touchmove", handleTouchMove);
+        document.removeEventListener("touchend", onEnd);
         setTimeout(() => { autoRotate = true; }, 10);
       };
 
+      const handleMouseMove = (e: MouseEvent) => onMove(e.clientX, e.clientY);
+      const handleTouchMove = (e: TouchEvent) => {
+        e.preventDefault();
+        onMove(e.touches[0].clientX, e.touches[0].clientY);
+      };
+
       document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("mouseup", onEnd);
+      document.addEventListener("touchmove", handleTouchMove, { passive: false });
+      document.addEventListener("touchend", onEnd);
+    };
+
+    const handleMouseDown = (e: MouseEvent) => startDrag(e.clientX, e.clientY);
+    const handleTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+      startDrag(e.touches[0].clientX, e.touches[0].clientY);
     };
 
     canvas.addEventListener("mousedown", handleMouseDown);
+    canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
     loadWorldData();
 
     return () => {
       rotationTimer.stop();
       canvas.removeEventListener("mousedown", handleMouseDown);
+      canvas.removeEventListener("touchstart", handleTouchStart);
     };
   }, [width, height]);
 
@@ -212,7 +228,7 @@ export default function RotatingEarth({ width = 500, height = 500, className = "
       )}
       <canvas
         ref={canvasRef}
-        className="w-full h-auto"
+        className="w-full h-auto touch-none"
         style={{ maxWidth: "100%", height: "auto" }}
       />
     </div>

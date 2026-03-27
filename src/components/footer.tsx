@@ -5,7 +5,7 @@ import { Logo } from "@/components/ui/logo";
 
 export function Footer() {
   return (
-    <footer className="bg-zinc-100 py-10 px-6 border-t border-zinc-200/60">
+    <footer className="py-10 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-8 pb-8 border-b border-zinc-200">
           <Logo size="md" />

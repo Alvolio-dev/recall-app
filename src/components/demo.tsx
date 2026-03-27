@@ -79,10 +79,10 @@ function TakeawaysOutput() {
             <div className="w-7 h-7 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
               <span className="text-xs font-bold text-zinc-600">{item.n}</span>
             </div>
-            <div>
-              <p className="text-[15px] text-zinc-800 leading-relaxed">{item.text}</p>
-              <button className="text-xs text-emerald-600 font-medium mt-1.5 hover:text-emerald-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded px-2 py-0.5 -ml-2 hover:bg-emerald-50">→ {item.ts}</button>
-            </div>
+            <p className="text-[15px] text-zinc-800 leading-relaxed">
+              {item.text}{" "}
+              <button className="inline-flex items-center text-[11px] font-medium text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-full px-2 py-0.5 hover:bg-emerald-100 transition-colors align-middle">{item.ts}</button>
+            </p>
           </motion.div>
         ))}
       </div>
