@@ -82,7 +82,7 @@ export function Testimonials() {
             Trusted by curious <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">minds.</span>
           </h2>
           <p className="text-zinc-500 text-lg font-light max-w-md mx-auto">
-            Students, researchers, creators — anyone who watches to learn.
+            Students, researchers, creators, anyone who watches to learn.
           </p>
         </motion.div>
 

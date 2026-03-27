@@ -8,7 +8,7 @@ import { MiniRing } from "@/components/ui/mini-ring";
 const themes = [
   { name: "Espresso technique", count: "5 videos", color: "bg-emerald-500", hoverBg: "hover:bg-emerald-50", hoverBorder: "hover:border-emerald-200", text: "Grind size and pre-infusion came up in all five. Consensus: slow the beginning of the shot." },
   { name: "Running form", count: "3 videos", color: "bg-violet-500", hoverBg: "hover:bg-violet-50", hoverBorder: "hover:border-violet-200", text: "All three agreed on cadence (170–180 spm). Still divided on heel striking." },
-  { name: "Sourdough", count: "2 videos", color: "bg-orange-500", hoverBg: "hover:bg-orange-50", hoverBorder: "hover:border-orange-200", text: "Cold proofing vs room temp still unresolved — worth one more video." },
+  { name: "Sourdough", count: "2 videos", color: "bg-orange-500", hoverBg: "hover:bg-orange-50", hoverBorder: "hover:border-orange-200", text: "Cold proofing vs room temp still unresolved, worth one more video." },
 ];
 
 export function Digest() {
@@ -28,7 +28,7 @@ export function Digest() {
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">knowledge.</span>
             </h2>
             <p className="text-zinc-500 text-base font-light leading-relaxed mb-4">
-              Every Sunday, Recall sends a digest of everything you watched — not just a list, but a narrative. What themes kept coming up. What ideas connected. What&apos;s still unanswered.
+              Every Sunday, Recall sends a digest of everything you watched: not just a list, but a narrative. What themes kept coming up. What ideas connected. What&apos;s still unanswered.
             </p>
             <p className="text-zinc-500 text-base font-light leading-relaxed mb-6">
               It&apos;s the feature that turns Recall from a useful tool into a thinking partner.
@@ -39,7 +39,7 @@ export function Digest() {
               glowColor="#6ee7b7"
               hoverTextColor="#d1fae5"
             >
-              Get Pro — $5/month
+              Get Pro, $5/month
             </HoverButton>
           </motion.div>
 
@@ -67,7 +67,7 @@ export function Digest() {
               </div>
 
               <p className="text-sm text-zinc-500 leading-relaxed mb-4">
-                You watched a lot of espresso content this week — five videos ranging from extraction theory to grinder comparisons. The common thread: why shots taste inconsistent.
+                You watched a lot of espresso content this week: five videos ranging from extraction theory to grinder comparisons. The common thread: why shots taste inconsistent.
               </p>
 
               <div className="space-y-2">

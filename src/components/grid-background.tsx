@@ -24,7 +24,7 @@ export function GridBackground({ children }: { children: React.ReactNode }) {
 
   return (
     <div ref={containerRef} onMouseMove={handleMouseMove} className="relative">
-      {/* Mouse-reveal grid — only visible near cursor */}
+      {/* Mouse-reveal grid. only visible near cursor */}
       <motion.div
         className="fixed inset-0 z-0 opacity-80 pointer-events-none"
         style={{

@@ -37,12 +37,12 @@ function VerdictOutput() {
         <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">Verdict</p>
       </div>
       <p className="text-[15px] text-zinc-800 leading-relaxed mb-5">
-        <strong className="text-zinc-900 font-semibold">Worth watching</strong> if you&apos;re getting into espresso and want to understand extraction — the first 20 minutes are excellent. Skip the second half if you already own a decent grinder.
+        <strong className="text-zinc-900 font-semibold">Worth watching</strong> if you&apos;re getting into espresso and want to understand extraction: the first 20 minutes are excellent. Skip the second half if you already own a decent grinder.
       </p>
-      <div className="flex flex-wrap gap-2 pt-5 border-t border-zinc-100 items-center">
-        <span className="text-xs font-medium text-zinc-400 mr-1">Covers</span>
+      <div className="flex flex-wrap gap-1.5 pt-5 border-t border-zinc-100 items-center">
+        <span className="text-[11px] font-medium text-zinc-400 mr-0.5 uppercase tracking-wider">Covers</span>
         {["Grind size", "Dose & yield", "Extraction theory", "Pre-infusion"].map((tag) => (
-          <span key={tag} className="text-xs px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-700 font-medium">
+          <span key={tag} className="text-[11px] px-2.5 py-1 rounded-full bg-zinc-900 text-white font-medium">
             {tag}
           </span>
         ))}
@@ -56,7 +56,7 @@ function TakeawaysOutput() {
     { n: 1, text: "Grind size is the single highest-leverage variable. A 1-click adjustment changes everything downstream.", ts: "3:12" },
     { n: 2, text: "Dose and yield form a ratio. 1:2 is standard; lighter roasts often need 1:2.5 or more.", ts: "8:45" },
     { n: 3, text: "Pre-infusion at low pressure before full extraction dramatically reduces channelling.", ts: "17:30" },
-    { n: 4, text: "Water temperature matters more than most realise — 90°C dark, 94°C light roasts.", ts: "24:10" },
+    { n: 4, text: "Water temperature matters more than most realise: 90°C dark, 94°C light roasts.", ts: "24:10" },
     { n: 5, text: "Calibrate by tasting, not by spec sheet. Most machines vary shot to shot.", ts: "31:55" },
   ];
 
@@ -94,11 +94,11 @@ function TakeawaysOutput() {
 function StepsOutput() {
   const steps = [
     "Set grinder to medium-fine and pull a test shot at your target dose (18g in)",
-    "Measure yield — aim for 36g out in 25–30 seconds for a 1:2 ratio",
+    "Measure yield: aim for 36g out in 25–30 seconds for a 1:2 ratio",
     "Too fast / sour: grind 1 click finer. Too slow / bitter: grind coarser",
     "Lock in grind, then set water temperature to 93°C and taste",
     "Try pre-infusion at 4 bar for 6 seconds before ramping to full pressure",
-    "Change only one variable at a time — taste between each adjustment",
+    "Change only one variable at a time, taste between each adjustment",
   ];
 
   return (
@@ -158,7 +158,7 @@ export function Demo() {
             Switch between modes to see how the same video becomes a different kind of summary.
           </p>
           <p className="text-zinc-500 text-base font-light leading-relaxed">
-            Whether you need a quick verdict, the key ideas with timestamps, or a step-by-step action list — Recall adapts to how you learn.
+            Whether you need a quick verdict, the key ideas with timestamps, or a step-by-step action list, Recall adapts to how you learn.
           </p>
         </motion.div>
 
@@ -229,7 +229,7 @@ export function Demo() {
               <input
                 id="demo-followup"
                 type="text"
-                placeholder="Ask a follow-up — e.g. what grinder does he recommend?"
+                placeholder="Ask a follow-up, e.g. what grinder does he recommend?"
                 className="flex-1 min-w-0 bg-transparent px-3 py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none"
               />
               <button

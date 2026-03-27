@@ -130,7 +130,7 @@ export function Pricing() {
               <span className="text-sm text-zinc-500">/mo</span>
             </div>
             <p className="text-xs text-zinc-500 mb-5 h-5">
-              {yearly ? "Billed $39/year" : "or $39/year — save 35%"}
+              {yearly ? "Billed $39/year" : "or $39/year, save 35%"}
             </p>
             <HoverButton
               className="w-full py-3 text-sm mb-2"
