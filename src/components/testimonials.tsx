@@ -68,7 +68,7 @@ function TestimonialsColumn({ testimonials, duration = 20, className }: { testim
 
 export function Testimonials() {
   return (
-    <section className="relative py-24 px-6 border-t border-zinc-200/60 overflow-hidden">
+    <section className="relative py-24 px-6 overflow-hidden">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

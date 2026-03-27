@@ -13,7 +13,7 @@ const themes = [
 
 export function Digest() {
   return (
-    <section className="relative py-24 px-6 border-t border-zinc-200/60">
+    <section className="relative py-24 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div

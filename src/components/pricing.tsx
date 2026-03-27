@@ -30,7 +30,7 @@ export function Pricing() {
   const [yearly, setYearly] = useState(false);
 
   return (
-    <section id="pricing" className="relative py-24 px-6 border-t border-zinc-200/60 bg-white/60">
+    <section id="pricing" className="relative py-24 px-6">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -43,12 +43,19 @@ export function Pricing() {
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-zinc-900">Free to start. Pro to grow.</h2>
           <p className="text-zinc-500 text-lg font-light mb-8">No credit card required. Upgrade when you&apos;re ready.</p>
 
-          <div className="inline-flex items-center bg-zinc-100 border border-zinc-200 rounded-full p-1">
+          <div className="relative inline-flex items-center bg-white border border-zinc-200 rounded-full p-1 shadow-sm">
+            {/* Sliding indicator */}
+            <div
+              className={cn(
+                "absolute top-1 bottom-1 rounded-full bg-emerald-600 transition-all duration-300 ease-out",
+                yearly ? "left-[calc(50%)] right-1" : "left-1 right-[calc(50%)]"
+              )}
+            />
             <button
               onClick={() => setYearly(false)}
               className={cn(
-                "px-5 py-2 rounded-full text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2",
-                !yearly ? "bg-zinc-900 text-white" : "text-zinc-500 hover:text-zinc-700"
+                "relative z-10 px-6 py-2.5 rounded-full text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2",
+                !yearly ? "text-white" : "text-zinc-500 hover:text-zinc-700"
               )}
             >
               Monthly
@@ -56,16 +63,16 @@ export function Pricing() {
             <button
               onClick={() => setYearly(true)}
               className={cn(
-                "px-5 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2",
-                yearly ? "bg-zinc-900 text-white" : "text-zinc-500 hover:text-zinc-700"
+                "relative z-10 px-6 py-2.5 rounded-full text-sm font-medium transition-colors duration-300 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2",
+                yearly ? "text-white" : "text-zinc-500 hover:text-zinc-700"
               )}
             >
               Yearly
               <span className={cn(
-                "text-[11px] font-medium px-2 py-0.5 rounded-full",
-                yearly ? "bg-emerald-500 text-white" : "bg-emerald-50 text-emerald-600"
+                "text-[10px] font-semibold px-2 py-0.5 rounded-full transition-colors duration-300",
+                yearly ? "bg-white/20 text-white" : "bg-emerald-50 text-emerald-600"
               )}>
-                Save 35%
+                -35%
               </span>
             </button>
           </div>

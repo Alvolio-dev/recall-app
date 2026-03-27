@@ -51,7 +51,7 @@ const features: BentoItem[] = [
 
 export function Features() {
   return (
-    <section id="features" className="relative py-24 px-6 border-t border-zinc-200/60 bg-white/60">
+    <section id="features" className="relative py-24 px-6">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

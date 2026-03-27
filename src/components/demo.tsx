@@ -145,7 +145,7 @@ export function Demo() {
   const activeColor = modes.find(m => m.id === activeMode)!.color;
 
   return (
-    <section id="demo" className="relative py-24 px-6 border-t border-zinc-200/60">
+    <section id="demo" className="relative py-24 px-6">
       <div className="max-w-xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
