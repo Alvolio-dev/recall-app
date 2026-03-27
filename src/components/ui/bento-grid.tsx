@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 export interface BentoItem {
@@ -18,15 +19,123 @@ interface BentoGridProps {
   items: BentoItem[];
 }
 
+function GlowWrapper({ children, className }: { children: React.ReactNode; className?: string }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const syncPointer = (e: PointerEvent) => {
+      if (cardRef.current) {
+        cardRef.current.style.setProperty("--x", e.clientX.toFixed(2));
+        cardRef.current.style.setProperty("--xp", (e.clientX / window.innerWidth).toFixed(2));
+        cardRef.current.style.setProperty("--y", e.clientY.toFixed(2));
+        cardRef.current.style.setProperty("--yp", (e.clientY / window.innerHeight).toFixed(2));
+      }
+    };
+    document.addEventListener("pointermove", syncPointer);
+    return () => document.removeEventListener("pointermove", syncPointer);
+  }, []);
+
+  const inlineStyles: Record<string, any> = {
+    "--base": 120,
+    "--spread": 200,
+    "--radius": "14",
+    "--border": "2",
+    "--backdrop": "hsl(0 0% 100% / 1)",
+    "--backup-border": "hsl(0 0% 90% / 0.5)",
+    "--size": "200",
+    "--outer": "1",
+    "--border-size": "calc(var(--border, 2) * 1px)",
+    "--spotlight-size": "calc(var(--size, 150) * 1px)",
+    "--hue": "calc(var(--base) + (var(--xp, 0) * var(--spread, 0)))",
+    backgroundImage: `radial-gradient(
+      var(--spotlight-size) var(--spotlight-size) at
+      calc(var(--x, 0) * 1px)
+      calc(var(--y, 0) * 1px),
+      hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.06)), transparent
+    )`,
+    backgroundColor: "var(--backdrop, transparent)",
+    backgroundSize: "calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)))",
+    backgroundPosition: "50% 50%",
+    backgroundAttachment: "fixed",
+    border: "var(--border-size) solid var(--backup-border)",
+    position: "relative" as const,
+    touchAction: "none" as const,
+  };
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: `
+        [data-bento-glow]::before,
+        [data-bento-glow]::after {
+          pointer-events: none;
+          content: "";
+          position: absolute;
+          inset: calc(var(--border-size) * -1);
+          border: var(--border-size) solid transparent;
+          border-radius: calc(var(--radius) * 1px);
+          background-attachment: fixed;
+          background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+          background-repeat: no-repeat;
+          background-position: 50% 50%;
+          mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+          mask-clip: padding-box, border-box;
+          mask-composite: intersect;
+        }
+        [data-bento-glow]::before {
+          background-image: radial-gradient(
+            calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
+            calc(var(--x, 0) * 1px)
+            calc(var(--y, 0) * 1px),
+            hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 50) * 1%) / var(--border-spot-opacity, 1)), transparent 100%
+          );
+          filter: brightness(2);
+        }
+        [data-bento-glow]::after {
+          background-image: radial-gradient(
+            calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
+            calc(var(--x, 0) * 1px)
+            calc(var(--y, 0) * 1px),
+            hsl(0 100% 100% / var(--border-light-opacity, 1)), transparent 100%
+          );
+        }
+        [data-bento-glow] [data-bento-glow-inner] {
+          position: absolute;
+          inset: 0;
+          will-change: filter;
+          opacity: var(--outer, 1);
+          border-radius: calc(var(--radius) * 1px);
+          border-width: calc(var(--border-size) * 20);
+          filter: blur(calc(var(--border-size) * 10));
+          background: none;
+          pointer-events: none;
+          border: none;
+        }
+        [data-bento-glow] > [data-bento-glow-inner]::before {
+          inset: -10px;
+          border-width: 10px;
+        }
+      `}} />
+      <div
+        ref={cardRef}
+        data-bento-glow
+        style={inlineStyles}
+        className={`rounded-[14px] relative backdrop-blur-[5px] ${className}`}
+      >
+        <div data-bento-glow-inner />
+        <div className="relative z-10">{children}</div>
+      </div>
+    </>
+  );
+}
+
 function BentoGrid({ items }: BentoGridProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-5xl mx-auto">
       {items.map((item, index) => (
-        <div
+        <GlowWrapper
           key={index}
           className={cn(
-            "group relative p-5 rounded-xl overflow-hidden transition-all duration-300",
-            "border border-zinc-200/80 bg-white",
+            "group p-5 overflow-hidden transition-all duration-300",
             "hover:shadow-[0_2px_12px_rgba(0,0,0,0.04)]",
             "hover:-translate-y-0.5 will-change-transform",
             item.colSpan === 2 ? "md:col-span-2" : "col-span-1",
@@ -93,15 +202,7 @@ function BentoGrid({ items }: BentoGridProps) {
               </span>
             </div>
           </div>
-
-          <div
-            className={`absolute inset-0 -z-10 rounded-xl p-px bg-gradient-to-br from-transparent via-zinc-100/50 to-transparent ${
-              item.hasPersistentHover
-                ? "opacity-100"
-                : "opacity-0 group-hover:opacity-100"
-            } transition-opacity duration-300`}
-          />
-        </div>
+        </GlowWrapper>
       ))}
     </div>
   );
