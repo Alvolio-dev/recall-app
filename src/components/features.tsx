@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Clock, Star, ListOrdered, MessageSquare, FolderOpen, Mail, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Logo } from "@/components/ui/logo";
 
 interface FeatureNode {
   id: number;
@@ -90,20 +91,23 @@ export function Features() {
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [, forceUpdate] = useState(0);
 
-  const updatePositions = useCallback(() => {
-    const total = featureData.length;
-    const radius = 180;
-    nodeRefs.current.forEach((node, index) => {
+  const orbitRingRef = useRef<HTMLDivElement>(null);
+
+  const updateRotation = useCallback(() => {
+    if (orbitRingRef.current) {
+      orbitRingRef.current.style.transform = `rotate(${angleRef.current}deg)`;
+    }
+    // Counter-rotate labels so they stay upright
+    nodeRefs.current.forEach((node) => {
       if (!node) return;
-      const angle = ((index / total) * 360 + angleRef.current) % 360;
-      const radian = (angle * Math.PI) / 180;
-      const x = radius * Math.cos(radian);
-      const y = radius * Math.sin(radian);
-      const zIndex = Math.round(100 + 50 * Math.cos(radian));
-      const opacity = Math.max(0.5, Math.min(1, 0.5 + 0.5 * ((1 + Math.sin(radian)) / 2)));
-      node.style.transform = `translate(${x}px, ${y}px)`;
-      node.style.zIndex = String(zIndex);
-      node.style.opacity = String(opacity);
+      const label = node.querySelector("[data-label]") as HTMLElement;
+      if (label) {
+        label.style.transform = `translate(-50%, 0) rotate(${-angleRef.current}deg)`;
+      }
+      const icon = node.querySelector("[data-icon]") as HTMLElement;
+      if (icon) {
+        icon.style.transform = `rotate(${-angleRef.current}deg)`;
+      }
     });
   }, []);
 
@@ -124,7 +128,7 @@ export function Features() {
       const idx = featureData.findIndex((f) => f.id === id);
       const targetAngle = (idx / featureData.length) * 360;
       angleRef.current = 270 - targetAngle;
-      updatePositions();
+      updateRotation();
       forceUpdate((n) => n + 1);
     }
   };
@@ -136,12 +140,12 @@ export function Features() {
       const delta = now - lastTime;
       lastTime = now;
       angleRef.current = (angleRef.current + delta * 0.012) % 360;
-      updatePositions();
+      updateRotation();
       rafRef.current = requestAnimationFrame(animate);
     };
     rafRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [autoRotate, updatePositions]);
+  }, [autoRotate, updateRotation]);
 
 
   const getStatusLabel = (status: string) => {
@@ -191,29 +195,45 @@ export function Features() {
           <div
             ref={orbitRef}
             className="absolute w-full h-full flex items-center justify-center"
-            style={{ perspective: "1000px" }}
           >
-            {/* Center orb */}
-            <div className="absolute w-14 h-14 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-emerald-600 flex items-center justify-center z-10 shadow-lg shadow-emerald-200">
-              <div className="absolute w-18 h-18 rounded-full border border-emerald-300/30 animate-ping opacity-50" style={{ width: 72, height: 72 }} />
-              <div className="w-7 h-7 rounded-full bg-white/90 backdrop-blur-md" />
+            {/* Center logo */}
+            <div className="absolute z-10 flex items-center justify-center">
+              <div className="absolute w-20 h-20 rounded-full border border-emerald-200/40 animate-ping opacity-30" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 via-teal-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-200">
+                <svg viewBox="0 0 12 12" className="w-6 h-6" fill="none">
+                  <polygon points="4.5,2 4.5,10 10,6" fill="white" />
+                </svg>
+              </div>
             </div>
 
-            {/* Orbit ring */}
-            <div className="absolute w-[360px] h-[360px] rounded-full border border-zinc-200/60" />
+            {/* Rotating orbit ring with nodes */}
+            <div
+              ref={orbitRingRef}
+              className="absolute w-[360px] h-[360px] rounded-full border border-zinc-200/60"
+              style={{ willChange: "transform" }}
+            >
+              {featureData.map((feature, index) => {
+                const angle = (index / featureData.length) * 360;
+                const radian = (angle * Math.PI) / 180;
+                const radius = 180;
+                const x = radius * Math.cos(radian);
+                const y = radius * Math.sin(radian);
+                const isExpanded = expandedId === feature.id;
+                const isRelated = expandedId !== null && featureData.find(f => f.id === expandedId)?.relatedIds.includes(feature.id);
+                const Icon = feature.icon;
 
-            {/* Nodes */}
-            {featureData.map((feature, index) => {
-              const isExpanded = expandedId === feature.id;
-              const isRelated = expandedId !== null && featureData.find(f => f.id === expandedId)?.relatedIds.includes(feature.id);
-              const Icon = feature.icon;
-
-              return (
-                <div
-                  key={feature.id}
-                  ref={(el) => { nodeRefs.current[index] = el; }}
-                  className="absolute cursor-pointer"
-                  style={isExpanded ? { zIndex: 200, opacity: 1 } : undefined}
+                return (
+                  <div
+                    key={feature.id}
+                    ref={(el) => { nodeRefs.current[index] = el; }}
+                    className="absolute cursor-pointer"
+                    style={{
+                      left: "50%",
+                      top: "50%",
+                      marginLeft: x,
+                      marginTop: y,
+                      zIndex: isExpanded ? 200 : 1,
+                    }}
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleItem(feature.id);
@@ -231,8 +251,9 @@ export function Features() {
                     }}
                   />
 
-                  {/* Node circle */}
+                  {/* Node circle — counter-rotated */}
                   <div
+                    data-icon
                     className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
                       isExpanded
                         ? "bg-zinc-900 text-white border-zinc-900 scale-125 shadow-lg"
@@ -244,10 +265,13 @@ export function Features() {
                     <Icon size={16} />
                   </div>
 
-                  {/* Label */}
-                  <div className={`absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-wide transition-all duration-300 ${
-                    isExpanded ? "text-zinc-900" : "text-zinc-500"
-                  }`}>
+                  {/* Label — counter-rotated */}
+                  <div
+                    data-label
+                    className={`absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-wide transition-all duration-300 ${
+                      isExpanded ? "text-zinc-900" : "text-zinc-500"
+                    }`}
+                  >
                     {feature.title}
                   </div>
 
@@ -300,6 +324,7 @@ export function Features() {
                 </div>
               );
             })}
+            </div>
           </div>
         </div>
         </div>
