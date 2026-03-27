@@ -41,7 +41,7 @@ function VerdictOutput() {
       <div className="flex flex-wrap gap-1.5 pt-5 border-t border-zinc-100 items-center">
         <span className="text-[11px] font-medium text-zinc-400 mr-0.5 uppercase tracking-wider">Covers</span>
         {["Grind size", "Dose & yield", "Extraction theory", "Pre-infusion"].map((tag) => (
-          <span key={tag} className="text-[11px] px-2.5 py-1 rounded-full bg-zinc-900 text-white font-medium">
+          <span key={tag} className="text-[11px] px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 font-medium border border-zinc-200">
             {tag}
           </span>
         ))}
