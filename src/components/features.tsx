@@ -1,332 +1,115 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Clock, Star, ListOrdered, MessageSquare, FolderOpen, Mail, ArrowRight } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Logo } from "@/components/ui/logo";
+import { cn } from "@/lib/utils";
+import { Clock, Star, ListOrdered, MessageSquare, FolderOpen, Mail } from "lucide-react";
 
-interface FeatureNode {
+interface Feature {
   id: number;
   title: string;
-  content: string;
-  icon: React.ElementType;
-  relatedIds: number[];
-  status: "core" | "pro" | "new";
-  color: string;
-  example: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  featured?: boolean;
 }
 
-const featureData: FeatureNode[] = [
-  {
-    id: 1,
-    title: "Worth my time?",
-    content: "A 3-sentence verdict. What the video covers, who it\'s for, whether it delivers. Decide in 10 seconds.",
-    icon: Clock,
-    relatedIds: [2, 3],
-    status: "core",
-    color: "#10b981",
-    example: "Worth watching for espresso beginners — first 20 min are gold.",
-  },
-  {
-    id: 2,
-    title: "Key takeaways",
-    content: "The 5-7 ideas that matter, with timestamps so you can jump straight to the moment it\'s discussed.",
-    icon: Star,
-    relatedIds: [1, 4],
-    status: "core",
-    color: "#8b5cf6",
-    example: "1. Grind size is the highest-leverage variable → 3:12",
-  },
-  {
-    id: 3,
-    title: "Step by step",
-    content: "A numbered action list you can actually follow. No filler, no preamble. Just what to do and in what order.",
-    icon: ListOrdered,
-    relatedIds: [1, 4],
-    status: "new",
-    color: "#f97316",
-    example: "1. Set grinder to medium-fine  2. Pull test shot at 18g",
-  },
-  {
-    id: 4,
-    title: "Ask follow-ups",
-    content: "Not sure about something? Ask anything and Recall answers from the transcript directly.",
-    icon: MessageSquare,
-    relatedIds: [2, 3],
-    status: "core",
-    color: "#10b981",
-    example: "\"What grinder does he recommend?\" → Niche Zero, at 24:10",
-  },
-  {
-    id: 5,
-    title: "Your library",
-    content: "Every summary you\'ve created, saved and searchable. Never lose a good idea buried in a tab.",
-    icon: FolderOpen,
-    relatedIds: [6],
-    status: "core",
-    color: "#8b5cf6",
-    example: "Search across all your summaries instantly.",
-  },
-  {
-    id: 6,
-    title: "Weekly digest",
-    content: "Every Sunday, a recap of what you watched and what you learned. Your knowledge, made visible.",
-    icon: Mail,
-    relatedIds: [5],
-    status: "pro",
-    color: "#f97316",
-    example: "3 themes this week: espresso, running form, sourdough.",
-  },
+const features: Feature[] = [
+  { id: 1, title: "Worth my time?", subtitle: "A 3-sentence verdict. Decide in 10 seconds whether a video is worth watching.", icon: <Clock className="w-6 h-6" />, featured: true },
+  { id: 2, title: "Key takeaways", subtitle: "The 5-7 ideas that matter, with timestamps to jump straight to each moment.", icon: <Star className="w-6 h-6" /> },
+  { id: 3, title: "Step by step", subtitle: "A numbered action list you can actually follow. No filler, just what to do.", icon: <ListOrdered className="w-6 h-6" /> },
+  { id: 4, title: "Ask follow-ups", subtitle: "Ask anything and Recall answers from the transcript directly.", icon: <MessageSquare className="w-6 h-6" /> },
+  { id: 5, title: "Your library", subtitle: "Every summary saved and searchable. Never lose a good idea buried in a tab.", icon: <FolderOpen className="w-6 h-6" /> },
+  { id: 6, title: "Weekly digest", subtitle: "Every Sunday, a recap of what you watched and what you learned.", icon: <Mail className="w-6 h-6" /> },
 ];
 
 export function Features() {
-  const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [autoRotate, setAutoRotate] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const orbitRef = useRef<HTMLDivElement>(null);
-  const angleRef = useRef(0);
-  const rafRef = useRef<number>(0);
-  const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [, forceUpdate] = useState(0);
-
-  const orbitRingRef = useRef<HTMLDivElement>(null);
-
-  const updateRotation = useCallback(() => {
-    if (orbitRingRef.current) {
-      orbitRingRef.current.style.transform = `rotate(${angleRef.current}deg)`;
-    }
-    // Counter-rotate labels so they stay upright
-    nodeRefs.current.forEach((node) => {
-      if (!node) return;
-      const label = node.querySelector("[data-label]") as HTMLElement;
-      if (label) {
-        label.style.transform = `translate(-50%, 0) rotate(${-angleRef.current}deg)`;
-      }
-      const icon = node.querySelector("[data-icon]") as HTMLElement;
-      if (icon) {
-        icon.style.transform = `rotate(${-angleRef.current}deg)`;
-      }
-    });
-  }, []);
-
-  const handleContainerClick = (e: React.MouseEvent) => {
-    if (e.target === containerRef.current || e.target === orbitRef.current) {
-      setExpandedId(null);
-      setAutoRotate(true);
-    }
-  };
-
-  const toggleItem = (id: number) => {
-    if (expandedId === id) {
-      setExpandedId(null);
-      setAutoRotate(true);
-    } else {
-      setExpandedId(id);
-      setAutoRotate(false);
-      const idx = featureData.findIndex((f) => f.id === id);
-      const targetAngle = (idx / featureData.length) * 360;
-      angleRef.current = 270 - targetAngle;
-      updateRotation();
-      forceUpdate((n) => n + 1);
-    }
-  };
-
-  useEffect(() => {
-    if (!autoRotate) return;
-    let lastTime = performance.now();
-    const animate = (now: number) => {
-      const delta = now - lastTime;
-      lastTime = now;
-      angleRef.current = (angleRef.current + delta * 0.012) % 360;
-      updateRotation();
-      rafRef.current = requestAnimationFrame(animate);
-    };
-    rafRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [autoRotate, updateRotation]);
-
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case "core": return "Core";
-      case "pro": return "Pro";
-      case "new": return "New";
-      default: return "";
-    }
-  };
-
-  const getStatusStyle = (status: string) => {
-    switch (status) {
-      case "core": return "bg-emerald-50 text-emerald-700 border border-emerald-200";
-      case "pro": return "bg-orange-50 text-orange-700 border border-orange-200";
-      case "new": return "bg-violet-50 text-violet-700 border border-violet-200";
-      default: return "";
-    }
-  };
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
 
   return (
     <section id="features" className="relative py-24 px-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="order-1 md:order-2"
+          className="text-center mb-12 md:mb-16"
         >
           <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">What it does</p>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-zinc-900">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-zinc-900">
             One link does <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">a lot.</span>
           </h2>
-          <p className="text-zinc-500 text-base font-light leading-relaxed mb-4">
-            Summaries, takeaways, follow-ups, and more — all from one YouTube link.
+          <p className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-300">
+            Explore every feature.
           </p>
-          <p className="text-zinc-400 text-sm">Click a node to explore each feature.</p>
         </motion.div>
 
-        <div
-          ref={containerRef}
-          onClick={handleContainerClick}
-          className="relative w-full h-[500px] flex items-center justify-center order-2 md:order-1"
-        >
-          <div
-            ref={orbitRef}
-            className="absolute w-full h-full flex items-center justify-center"
-          >
-            {/* Center logo */}
-            <div className="absolute z-10 flex items-center justify-center">
-              <div className="absolute w-20 h-20 rounded-full border border-emerald-200/40 animate-ping opacity-30" />
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 via-teal-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-200">
-                <svg viewBox="0 0 12 12" className="w-6 h-6" fill="none">
-                  <polygon points="4.5,2 4.5,10 10,6" fill="white" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Rotating orbit ring with nodes */}
-            <div
-              ref={orbitRingRef}
-              className="absolute w-[360px] h-[360px] rounded-full border border-zinc-200/60"
-              style={{ willChange: "transform" }}
+        <div className="space-y-3">
+          {features.map((feature, i) => (
+            <motion.div
+              key={feature.id}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.06 }}
+              className="relative group"
+              onMouseEnter={() => setHoveredItem(feature.id)}
+              onMouseLeave={() => setHoveredItem(null)}
             >
-              {featureData.map((feature, index) => {
-                const angle = (index / featureData.length) * 360;
-                const radian = (angle * Math.PI) / 180;
-                const radius = 180;
-                const x = radius * Math.cos(radian);
-                const y = radius * Math.sin(radian);
-                const isExpanded = expandedId === feature.id;
-                const isRelated = expandedId !== null && featureData.find(f => f.id === expandedId)?.relatedIds.includes(feature.id);
-                const Icon = feature.icon;
+              <div
+                className={cn(
+                  "relative overflow-hidden border bg-white transition-all duration-300 ease-in-out cursor-default rounded-xl",
+                  hoveredItem === feature.id
+                    ? "h-32 border-emerald-300 shadow-lg shadow-emerald-100/50 bg-emerald-50/30"
+                    : "h-20 border-zinc-200 hover:border-zinc-300"
+                )}
+              >
+                {/* Corner brackets on hover */}
+                {hoveredItem === feature.id && (
+                  <>
+                    <div className="absolute top-3 left-3 w-6 h-6">
+                      <div className="absolute top-0 left-0 w-4 h-0.5 bg-emerald-500" />
+                      <div className="absolute top-0 left-0 w-0.5 h-4 bg-emerald-500" />
+                    </div>
+                    <div className="absolute bottom-3 right-3 w-6 h-6">
+                      <div className="absolute bottom-0 right-0 w-4 h-0.5 bg-emerald-500" />
+                      <div className="absolute bottom-0 right-0 w-0.5 h-4 bg-emerald-500" />
+                    </div>
+                  </>
+                )}
 
-                return (
-                  <div
-                    key={feature.id}
-                    ref={(el) => { nodeRefs.current[index] = el; }}
-                    className="absolute cursor-pointer"
-                    style={{
-                      left: "50%",
-                      top: "50%",
-                      marginLeft: x,
-                      marginTop: y,
-                      zIndex: isExpanded ? 200 : 1,
-                    }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleItem(feature.id);
-                  }}
-                >
-                  {/* Glow */}
-                  <div
-                    className={`absolute rounded-full ${isRelated ? "animate-pulse" : ""}`}
-                    style={{
-                      background: `radial-gradient(circle, ${feature.color}20 0%, transparent 70%)`,
-                      width: 60,
-                      height: 60,
-                      left: -10,
-                      top: -10,
-                    }}
-                  />
-
-                  {/* Node circle — counter-rotated */}
-                  <div
-                    data-icon
-                    className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                      isExpanded
-                        ? "bg-zinc-900 text-white border-zinc-900 scale-125 shadow-lg"
-                        : isRelated
-                        ? "bg-white text-zinc-900 border-zinc-400 animate-pulse"
-                        : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400"
-                    }`}
-                  >
-                    <Icon size={16} />
+                <div className="flex items-center justify-between h-full px-6 md:px-8">
+                  <div className="flex-1">
+                    <h3
+                      className={cn(
+                        "font-bold transition-colors duration-300",
+                        feature.featured ? "text-xl md:text-2xl" : "text-lg md:text-xl",
+                        hoveredItem === feature.id ? "text-emerald-600" : "text-zinc-900"
+                      )}
+                    >
+                      {feature.title}
+                    </h3>
+                    <p
+                      className={cn(
+                        "mt-1 transition-all duration-300 text-sm",
+                        hoveredItem === feature.id
+                          ? "text-zinc-600 opacity-100 translate-y-0"
+                          : "text-zinc-400 opacity-70"
+                      )}
+                    >
+                      {feature.subtitle}
+                    </p>
                   </div>
 
-                  {/* Label — counter-rotated */}
-                  <div
-                    data-label
-                    className={`absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-wide transition-all duration-300 ${
-                      isExpanded ? "text-zinc-900" : "text-zinc-500"
-                    }`}
-                  >
-                    {feature.title}
-                  </div>
-
-                  {/* Expanded card */}
-                  {isExpanded && (
-                    <Card className="absolute top-20 left-1/2 -translate-x-1/2 w-72 bg-white/95 backdrop-blur-lg border-zinc-200 shadow-xl shadow-zinc-200/50 overflow-visible z-50">
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-zinc-300" />
-                      <CardHeader className="pb-2">
-                        <div className="flex justify-between items-center">
-                          <Badge className={`px-2 text-[10px] ${getStatusStyle(feature.status)}`}>
-                            {getStatusLabel(feature.status)}
-                          </Badge>
-                        </div>
-                        <CardTitle className="text-sm mt-2 text-zinc-900">{feature.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="text-xs text-zinc-600">
-                        <p className="leading-relaxed">{feature.content}</p>
-
-                        <div className="mt-3 pt-3 border-t border-zinc-100">
-                          <p className="text-[10px] font-medium text-zinc-400 mb-1.5">Example output</p>
-                          <p className="text-xs italic" style={{ color: feature.color }}>{feature.example}</p>
-                        </div>
-
-                        {feature.relatedIds.length > 0 && (
-                          <div className="mt-3 pt-3 border-t border-zinc-100">
-                            <p className="text-[10px] font-medium text-zinc-400 mb-1.5">Related features</p>
-                            <div className="flex flex-wrap gap-1">
-                              {feature.relatedIds.map((relId) => {
-                                const rel = featureData.find((f) => f.id === relId);
-                                return (
-                                  <button
-                                    key={relId}
-                                    className="flex items-center h-6 px-2 text-[10px] rounded-md border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 text-zinc-600 transition-colors"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      toggleItem(relId);
-                                    }}
-                                  >
-                                    {rel?.title}
-                                    <ArrowRight size={8} className="ml-1 text-zinc-400" />
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
+                  {hoveredItem === feature.id && (
+                    <div className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {feature.icon}
+                    </div>
                   )}
                 </div>
-              );
-            })}
-            </div>
-          </div>
-        </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
