@@ -25,13 +25,11 @@ export function Footer() {
         </div>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex gap-6">
-            {["Privacy", "Terms", "Twitter", "Contact"].map((link) => (
-              <a key={link} href="#" className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded">
-                {link}
-              </a>
-            ))}
+            <a href="/privacy" className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">Privacy</a>
+            <a href="/terms" className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">Terms</a>
+            <a href="/support" className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">Support</a>
           </div>
-          <p className="text-sm text-zinc-500">&copy; 2026 Recall. Made in the Illawarra.</p>
+          <p className="text-sm text-zinc-500">&copy; 2026 Recall. Made in Sydney.</p>
         </div>
       </div>
     </footer>

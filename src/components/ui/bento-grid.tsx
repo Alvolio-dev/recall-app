@@ -186,7 +186,7 @@ function BentoGrid({ items }: BentoGridProps) {
               </p>
             </div>
 
-            <div className="flex items-center justify-between mt-1">
+            <div className="flex items-center mt-1">
               <div className="flex items-center space-x-1.5 text-xs text-zinc-400">
                 {item.tags?.map((tag, i) => (
                   <span
@@ -197,9 +197,6 @@ function BentoGrid({ items }: BentoGridProps) {
                   </span>
                 ))}
               </div>
-              <span className="text-xs text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                {item.cta || "Learn more →"}
-              </span>
             </div>
           </div>
         </GlowWrapper>
