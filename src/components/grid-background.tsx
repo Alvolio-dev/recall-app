@@ -53,18 +53,18 @@ export function GridBackground({ children }: { children: React.ReactNode }) {
     gridOffsetY.set((gridOffsetY.get() + delta * speed) % 40);
   });
 
-  const maskImage = useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
+  const maskImage = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
 
   return (
     <div ref={containerRef} onMouseMove={handleMouseMove} className="relative">
       {/* Static grid */}
-      <div className="fixed inset-0 z-0 opacity-[0.08] pointer-events-none">
+      <div className="fixed inset-0 z-0 opacity-[0.06] pointer-events-none">
         <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} />
       </div>
 
       {/* Mouse-reveal grid */}
       <motion.div
-        className="fixed inset-0 z-0 opacity-40 pointer-events-none"
+        className="fixed inset-0 z-0 opacity-60 pointer-events-none"
         style={{ maskImage, WebkitMaskImage: maskImage }}
       >
         <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} />
