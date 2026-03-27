@@ -35,7 +35,7 @@ export default function BlogPage() {
             Learn to learn <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">better.</span>
           </h1>
           <p className="text-zinc-500 text-lg font-light max-w-md mx-auto">
-            Tips, research, and ideas on getting more from what you watch.
+            Tips, research and ideas on getting more from what you watch.
           </p>
         </motion.div>
 

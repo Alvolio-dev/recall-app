@@ -130,9 +130,9 @@ export default function BlogPostPage() {
           </div>
 
           {/* CTA */}
-          <div className="mt-12 p-8 rounded-2xl bg-zinc-900 text-center flex flex-col items-center">
-            <h3 className="text-xl font-bold text-white mb-2">Ready to remember more?</h3>
-            <p className="text-zinc-400 text-sm mb-6">Try Recall free — no account needed.</p>
+          <div className="mt-12 p-8 rounded-2xl border border-zinc-200 bg-zinc-50 text-center flex flex-col items-center">
+            <h3 className="text-xl font-bold text-zinc-900 mb-2">Ready to remember more?</h3>
+            <p className="text-zinc-500 text-sm mb-6">Try Recall free. No account needed.</p>
             <Link href="/">
               <MotionButton label="Try Recall" className="w-40" />
             </Link>

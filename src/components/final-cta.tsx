@@ -43,9 +43,6 @@ export function FinalCta() {
         </div>
 
         <p className="text-xs text-zinc-400 mt-4">Free forever · Upgrade anytime</p>
-        <a href="#pricing" className="inline-flex items-center gap-1.5 text-sm text-zinc-400 mt-4 hover:text-zinc-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded">
-          Or see pricing
-        </a>
       </motion.div>
     </section>
   );

@@ -38,7 +38,7 @@ export function Digest() {
               glowColor="#6ee7b7"
               hoverTextColor="#d1fae5"
             >
-              Get Pro, $5/month
+              Get Pro, $2.99/month
             </HoverButton>
           </motion.div>
 

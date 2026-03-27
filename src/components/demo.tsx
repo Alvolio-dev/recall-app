@@ -14,15 +14,15 @@ const modes = [
 const colorMap = {
   emerald: {
     tab: "bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm shadow-emerald-100",
-    panel: "border-zinc-200",
+    panel: "border-emerald-200 bg-emerald-50/30 border-l-4 border-l-emerald-400",
   },
   violet: {
     tab: "bg-zinc-900 border-zinc-900 text-white shadow-sm",
-    panel: "border-zinc-200",
+    panel: "border-violet-200 bg-violet-50/30 border-l-4 border-l-violet-400",
   },
   orange: {
     tab: "bg-orange-50 border-orange-200 text-orange-700 shadow-sm shadow-orange-100",
-    panel: "border-zinc-200",
+    panel: "border-orange-200 bg-orange-50/30 border-l-4 border-l-orange-400",
   },
 };
 
@@ -126,19 +126,19 @@ function StepsOutput() {
         </div>
         <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">Action list</p>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-2">
         {steps.map((step, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08, duration: 0.3 }}
-            className="flex gap-3 group"
+            className="flex items-start gap-3 rounded-lg border border-zinc-100 bg-zinc-50 px-3.5 py-3 group hover:border-orange-200 hover:bg-orange-50/30 transition-colors"
           >
-            <div className="w-6 h-6 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
-              <span className="text-[10px] font-bold text-zinc-600">{i + 1}</span>
+            <div className="w-5 h-5 rounded-md border-2 border-zinc-300 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:border-orange-400 transition-colors">
+              <span className="text-[9px] font-bold text-zinc-400 group-hover:text-orange-500 transition-colors">{i + 1}</span>
             </div>
-            <p className="text-[15px] text-zinc-800 leading-relaxed">{step}</p>
+            <p className="text-[13px] text-zinc-700 leading-relaxed">{step}</p>
           </motion.div>
         ))}
       </div>
@@ -172,7 +172,7 @@ export function Demo() {
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">Three outputs.</span>
           </h2>
           <p className="text-zinc-500 text-base font-light leading-relaxed max-w-lg mx-auto">
-            Pick a mode and get a summary shaped around what you actually need — a quick verdict, the key ideas, or a step-by-step action list.
+            Pick a mode and get a summary shaped around what you actually need: a quick verdict, the key ideas or a step-by-step action list.
           </p>
         </motion.div>
 

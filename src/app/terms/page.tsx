@@ -30,7 +30,7 @@ export default function TermsPage() {
         <div className="space-y-8 text-zinc-600 leading-relaxed">
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">1. Acceptance of terms</h2>
-            <p>By using Recall, you agree to these terms. If you don&apos;t agree, please don&apos;t use the service. We may update these terms from time to time — continued use means you accept the changes.</p>
+            <p>By using Recall, you agree to these terms. If you don&apos;t agree, please don&apos;t use the service. We may update these terms from time to time. Continued use means you accept the changes.</p>
           </section>
 
           <section>
@@ -45,12 +45,12 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">4. Free and Pro plans</h2>
-            <p>Free accounts have access to unlimited summaries, all three modes, and two follow-up questions per video. Pro accounts unlock additional features including unlimited follow-ups, saved libraries, weekly digests, and export capabilities. Pro pricing is listed on our pricing page and may change with notice.</p>
+            <p>Free accounts have access to unlimited summaries, all three modes and two follow-up questions per video. Pro accounts unlock additional features including unlimited follow-ups, saved libraries, weekly digests and export capabilities. Pro pricing is listed on our pricing page and may change with notice.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">5. Billing and cancellation</h2>
-            <p>Pro subscriptions are billed monthly or annually. You can cancel at any time — your access continues until the end of the current billing period. Refunds are available within the first 7 days of a new subscription. After that, no refunds are issued for partial periods.</p>
+            <p>Pro subscriptions are billed monthly or annually. You can cancel at any time. Your access continues until the end of the current billing period. Refunds are available within the first 7 days of a new subscription. After that, no refunds are issued for partial periods.</p>
           </section>
 
           <section>
@@ -65,7 +65,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">8. Intellectual property</h2>
-            <p>Recall&apos;s interface, branding, and technology are owned by Recall. Summaries generated from your submitted URLs are yours to use, save, and export. We do not claim ownership over your generated content.</p>
+            <p>Recall&apos;s interface, branding and technology are owned by Recall. Summaries generated from your submitted URLs are yours to use, save and export. We do not claim ownership over your generated content.</p>
           </section>
 
           <section>

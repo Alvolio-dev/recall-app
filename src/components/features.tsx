@@ -38,7 +38,7 @@ export function Features() {
             One link <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">does a lot.</span>
           </h2>
           <p className="text-zinc-500 text-lg font-light max-w-md mx-auto">
-            Summaries, takeaways, follow-ups, and more, all from one YouTube link.
+            Summaries, takeaways, follow-ups and more from one YouTube link.
           </p>
         </motion.div>
 

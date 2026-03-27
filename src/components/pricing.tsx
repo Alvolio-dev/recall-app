@@ -71,7 +71,7 @@ export function Pricing() {
                 "text-[10px] font-semibold px-2 py-0.5 rounded-full transition-colors duration-300",
                 yearly ? "bg-white/20 text-white" : "bg-emerald-50 text-emerald-600"
               )}>
-                -35%
+                -33%
               </span>
             </button>
           </div>
@@ -125,11 +125,11 @@ export function Pricing() {
             <p className="text-base font-medium mb-1 text-zinc-900">Pro</p>
             <p className="text-sm text-zinc-500 mb-5">For people who want to retain what they learn.</p>
             <div className="flex items-baseline gap-1 mb-1">
-              <span className="text-5xl font-bold tracking-tight text-zinc-900">${yearly ? "3" : "5"}</span>
+              <span className="text-5xl font-bold tracking-tight text-zinc-900">${yearly ? "1.99" : "2.99"}</span>
               <span className="text-sm text-zinc-500">/mo</span>
             </div>
             <p className="text-xs text-zinc-500 mb-5 h-5">
-              {yearly ? "Billed $39/year" : "or $39/year, save 35%"}
+              {yearly ? "Billed $23.88/year" : "or $23.88/year, save 33%"}
             </p>
             <HoverButton
               className="w-full py-3 text-sm mb-2"

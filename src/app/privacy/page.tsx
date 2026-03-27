@@ -6,10 +6,10 @@ import { Logo } from "@/components/ui/logo";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How Recall collects, uses, and protects your data.",
+    "How Recall collects, uses and protects your data.",
   openGraph: {
     title: "Privacy Policy | Recall",
-    description: "How Recall collects, uses, and protects your data.",
+    description: "How Recall collects, uses and protects your data.",
   },
 };
 
@@ -30,12 +30,12 @@ export default function PrivacyPage() {
         <div className="space-y-8 text-zinc-600 leading-relaxed">
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">1. Information we collect</h2>
-            <p>When you use Recall, we collect the YouTube URLs you submit for summarisation. If you create an account, we also collect your email address and basic profile information. We do not collect passwords — authentication is handled via secure third-party providers.</p>
+            <p>When you use Recall, we collect the YouTube URLs you submit for summarisation. If you create an account, we also collect your email address and basic profile information. We do not collect passwords. Authentication is handled via secure third-party providers.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">2. How we use your information</h2>
-            <p>We use the URLs you provide to generate summaries via our AI processing pipeline. Your email is used for account management, weekly digests (if enabled), and important service updates. We never sell your personal data to third parties.</p>
+            <p>We use the URLs you provide to generate summaries via our AI processing pipeline. Your email is used for account management, weekly digests (if enabled) and important service updates. We never sell your personal data to third parties.</p>
           </section>
 
           <section>

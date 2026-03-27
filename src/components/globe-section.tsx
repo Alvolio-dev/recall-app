@@ -33,7 +33,7 @@ export function GlobeSection() {
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">no borders.</span>
             </h2>
             <p className="text-zinc-500 text-base font-light leading-relaxed mb-6">
-              Recall works with YouTube videos in any language. Creators, students, and researchers from over 120 countries use it to turn hours of content into minutes of insight.
+              Recall works with YouTube videos in any language. Creators, students and researchers from over 120 countries use it to turn hours of content into minutes of insight.
             </p>
 
             <div className="flex gap-8">
