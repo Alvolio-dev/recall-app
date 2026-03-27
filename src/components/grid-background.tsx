@@ -20,13 +20,13 @@ export function GridBackground({ children }: { children: React.ReactNode }) {
     [mouseX, mouseY]
   );
 
-  const maskImage = useMotionTemplate`radial-gradient(300px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
+  const maskImage = useMotionTemplate`radial-gradient(120px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
 
   return (
     <div ref={containerRef} onMouseMove={handleMouseMove} className="relative">
       {/* Mouse-reveal grid — only visible near cursor */}
       <motion.div
-        className="fixed inset-0 z-0 opacity-50 pointer-events-none"
+        className="fixed inset-0 z-0 opacity-80 pointer-events-none"
         style={{
           maskImage,
           WebkitMaskImage: maskImage,
