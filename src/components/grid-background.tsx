@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useRef, useCallback } from "react";
-import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useMotionTemplate,
+} from "framer-motion";
 
 export function GridBackground({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -16,27 +20,19 @@ export function GridBackground({ children }: { children: React.ReactNode }) {
     [mouseX, mouseY]
   );
 
-  const dotMask = useMotionTemplate`radial-gradient(250px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
+  const maskImage = useMotionTemplate`radial-gradient(300px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
 
   return (
     <div ref={containerRef} onMouseMove={handleMouseMove} className="relative">
-      {/* Static dot pattern — very faint */}
-      <div
-        className="fixed inset-0 z-0 pointer-events-none opacity-[0.35]"
-        style={{
-          backgroundImage: "radial-gradient(circle, #d4d4d8 0.8px, transparent 0.8px)",
-          backgroundSize: "24px 24px",
-        }}
-      />
-
-      {/* Mouse-reveal dot pattern — brighter near cursor */}
+      {/* Mouse-reveal grid — only visible near cursor */}
       <motion.div
-        className="fixed inset-0 z-0 pointer-events-none opacity-70"
+        className="fixed inset-0 z-0 opacity-50 pointer-events-none"
         style={{
-          backgroundImage: "radial-gradient(circle, #a1a1aa 0.8px, transparent 0.8px)",
-          backgroundSize: "24px 24px",
-          maskImage: dotMask,
-          WebkitMaskImage: dotMask,
+          maskImage,
+          WebkitMaskImage: maskImage,
+          backgroundImage:
+            "linear-gradient(to right, #d4d4d8 1px, transparent 1px), linear-gradient(to bottom, #d4d4d8 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
         }}
       />
 
