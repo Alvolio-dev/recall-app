@@ -6,6 +6,7 @@ import { Demo } from "@/components/demo";
 import { Pricing } from "@/components/pricing";
 import { Digest } from "@/components/digest";
 import { Testimonials } from "@/components/testimonials";
+import { GlobeSection } from "@/components/globe-section";
 import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
 
@@ -17,6 +18,7 @@ export default function Home() {
       <Features />
       <Demo />
       <Testimonials />
+      <GlobeSection />
       <Digest />
       <Pricing />
       <FinalCta />
