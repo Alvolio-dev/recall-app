@@ -14,21 +14,15 @@ const modes = [
 const colorMap = {
   emerald: {
     tab: "bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm shadow-emerald-100",
-    panel: "border-emerald-100",
-    label: "text-emerald-600",
-    glow: "bg-emerald-400/10",
+    panel: "border-zinc-200",
   },
   violet: {
-    tab: "bg-violet-50 border-violet-200 text-violet-700 shadow-sm shadow-violet-100",
-    panel: "border-violet-100",
-    label: "text-violet-600",
-    glow: "bg-violet-400/10",
+    tab: "bg-zinc-900 border-zinc-900 text-white shadow-sm",
+    panel: "border-zinc-200",
   },
   orange: {
     tab: "bg-orange-50 border-orange-200 text-orange-700 shadow-sm shadow-orange-100",
-    panel: "border-orange-100",
-    label: "text-orange-600",
-    glow: "bg-orange-400/10",
+    panel: "border-zinc-200",
   },
 };
 
@@ -39,9 +33,9 @@ function VerdictOutput() {
         <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center">
           <Sparkles className="w-3 h-3 text-emerald-600" />
         </div>
-        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-emerald-600">Verdict</p>
+        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">Verdict</p>
       </div>
-      <p className="text-[15px] text-zinc-700 leading-relaxed mb-5">
+      <p className="text-[15px] text-zinc-800 leading-relaxed mb-5">
         <strong className="text-zinc-900 font-semibold">Worth watching</strong> if you&apos;re getting into espresso and want to understand extraction — the first 20 minutes are excellent. Skip the second half if you already own a decent grinder.
       </p>
       <div className="flex flex-wrap gap-2 pt-5 border-t border-zinc-100 items-center">
@@ -71,7 +65,7 @@ function TakeawaysOutput() {
         <div className="w-6 h-6 rounded-lg bg-violet-100 flex items-center justify-center">
           <Star className="w-3 h-3 text-violet-600" />
         </div>
-        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-violet-600">5 key ideas</p>
+        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">5 key ideas</p>
       </div>
       <div className="space-y-4">
         {items.map((item, i) => (
@@ -82,12 +76,12 @@ function TakeawaysOutput() {
             transition={{ delay: i * 0.1, duration: 0.3 }}
             className="flex gap-3 group"
           >
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-100 to-violet-50 border border-violet-200 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
-              <span className="text-xs font-bold text-violet-600">{item.n}</span>
+            <div className="w-7 h-7 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
+              <span className="text-xs font-bold text-zinc-600">{item.n}</span>
             </div>
             <div>
-              <p className="text-[15px] text-zinc-700 leading-relaxed">{item.text}</p>
-              <button className="text-xs text-violet-500 font-semibold mt-1.5 hover:text-violet-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded px-2 py-0.5 -ml-2 hover:bg-violet-50">→ {item.ts}</button>
+              <p className="text-[15px] text-zinc-800 leading-relaxed">{item.text}</p>
+              <button className="text-xs text-emerald-600 font-medium mt-1.5 hover:text-emerald-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded px-2 py-0.5 -ml-2 hover:bg-emerald-50">→ {item.ts}</button>
             </div>
           </motion.div>
         ))}
@@ -112,7 +106,7 @@ function StepsOutput() {
         <div className="w-6 h-6 rounded-lg bg-orange-100 flex items-center justify-center">
           <ListOrdered className="w-3 h-3 text-orange-600" />
         </div>
-        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-orange-600">Action list</p>
+        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">Action list</p>
       </div>
       <div className="space-y-3">
         {steps.map((step, i) => (
@@ -123,10 +117,10 @@ function StepsOutput() {
             transition={{ delay: i * 0.08, duration: 0.3 }}
             className="flex gap-3 group"
           >
-            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-orange-100 to-orange-50 border border-orange-200 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
-              <span className="text-[10px] font-bold text-orange-600">{i + 1}</span>
+            <div className="w-6 h-6 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
+              <span className="text-[10px] font-bold text-zinc-600">{i + 1}</span>
             </div>
-            <p className="text-[15px] text-zinc-700 leading-relaxed">{step}</p>
+            <p className="text-[15px] text-zinc-800 leading-relaxed">{step}</p>
           </motion.div>
         ))}
       </div>
