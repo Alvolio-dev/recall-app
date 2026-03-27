@@ -86,6 +86,8 @@ export function Features() {
   const [autoRotate, setAutoRotate] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
+  const angleRef = useRef(0);
+  const rafRef = useRef<number>(0);
 
   const handleContainerClick = (e: React.MouseEvent) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -104,16 +106,24 @@ export function Features() {
       // Center on node
       const idx = featureData.findIndex((f) => f.id === id);
       const targetAngle = (idx / featureData.length) * 360;
-      setRotationAngle(270 - targetAngle);
+      const newAngle = 270 - targetAngle;
+      angleRef.current = newAngle;
+      setRotationAngle(newAngle);
     }
   };
 
   useEffect(() => {
     if (!autoRotate) return;
-    const timer = setInterval(() => {
-      setRotationAngle((prev) => (prev + 0.25) % 360);
-    }, 50);
-    return () => clearInterval(timer);
+    let lastTime = performance.now();
+    const animate = (now: number) => {
+      const delta = now - lastTime;
+      lastTime = now;
+      angleRef.current = (angleRef.current + delta * 0.012) % 360;
+      setRotationAngle(angleRef.current);
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
   }, [autoRotate]);
 
   const getPosition = (index: number) => {
@@ -148,27 +158,28 @@ export function Features() {
   return (
     <section id="features" className="relative py-24 px-6">
       <div className="max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8"
+          className="order-2 md:order-1"
         >
           <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">What it does</p>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-zinc-900">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-zinc-900">
             One link does <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">a lot.</span>
           </h2>
-          <p className="text-zinc-500 text-lg font-light max-w-md mx-auto mb-2">
+          <p className="text-zinc-500 text-base font-light leading-relaxed mb-4">
             Summaries, takeaways, follow-ups, and more — all from one YouTube link.
           </p>
-          <p className="text-xs text-zinc-400">Click a node to explore</p>
+          <p className="text-zinc-400 text-sm">Click a node to explore each feature.</p>
         </motion.div>
 
         <div
           ref={containerRef}
           onClick={handleContainerClick}
-          className="relative w-full h-[500px] flex items-center justify-center"
+          className="relative w-full h-[500px] flex items-center justify-center order-1 md:order-2"
         >
           <div
             ref={orbitRef}
@@ -287,6 +298,7 @@ export function Features() {
               );
             })}
           </div>
+        </div>
         </div>
       </div>
     </section>
