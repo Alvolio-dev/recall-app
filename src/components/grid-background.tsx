@@ -16,7 +16,7 @@ export function GridBackground({ children }: { children: React.ReactNode }) {
     [mouseX, mouseY]
   );
 
-  const dotMask = useMotionTemplate`radial-gradient(700px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
+  const dotMask = useMotionTemplate`radial-gradient(250px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
 
   return (
     <div ref={containerRef} onMouseMove={handleMouseMove} className="relative">
