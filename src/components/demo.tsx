@@ -140,21 +140,24 @@ export function Demo() {
 
   return (
     <section id="demo" className="relative py-24 px-6">
-      <div className="max-w-xl mx-auto">
+      <div className="max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
         >
           <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">See it in action</p>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-zinc-900">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-zinc-900">
             Same video.<br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">Three different outputs.</span>
           </h2>
-          <p className="text-zinc-500 text-lg font-light">
+          <p className="text-zinc-500 text-base font-light leading-relaxed mb-4">
             Switch between modes to see how the same video becomes a different kind of summary.
+          </p>
+          <p className="text-zinc-500 text-base font-light leading-relaxed">
+            Whether you need a quick verdict, the key ideas with timestamps, or a step-by-step action list — Recall adapts to how you learn.
           </p>
         </motion.div>
 
@@ -238,6 +241,7 @@ export function Demo() {
           </div>
           <p className="text-xs text-zinc-400 text-center">Free: 2 follow-ups per video · Pro: unlimited</p>
         </motion.div>
+        </div>
       </div>
     </section>
   );
