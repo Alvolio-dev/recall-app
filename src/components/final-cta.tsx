@@ -1,0 +1,55 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Globe } from "lucide-react";
+import { HoverButton } from "@/components/ui/hover-button";
+
+export function FinalCta() {
+  return (
+    <section className="relative py-24 px-6 border-t border-zinc-200/60 bg-zinc-900 overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-emerald-500/[0.1] blur-[120px] pointer-events-none" />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="relative max-w-lg mx-auto text-center"
+      >
+        <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-white">
+          Ready to<br />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400">remember more?</span>
+        </h2>
+        <p className="text-zinc-400 text-base font-light mb-8">
+          Paste your first link. No sign-up, no credit card, no commitment.
+        </p>
+
+        <label htmlFor="cta-url" className="sr-only">YouTube URL</label>
+        <div className="flex items-center bg-white/[0.06] border border-white/[0.1] rounded-2xl max-w-md mx-auto overflow-hidden focus-within:border-emerald-500/40 focus-within:shadow-[0_0_0_3px_rgba(16,185,129,0.15)] transition-all">
+          <div className="pl-4 text-zinc-500" aria-hidden="true">
+            <Globe className="w-4 h-4" />
+          </div>
+          <input
+            id="cta-url"
+            type="url"
+            placeholder="Paste a YouTube URL…"
+            className="flex-1 min-w-0 bg-transparent px-3 py-3.5 text-sm text-white placeholder:text-zinc-500 outline-none"
+          />
+          <HoverButton
+            className="m-1.5 px-5 py-2.5 text-sm whitespace-nowrap"
+            backgroundColor="#059669"
+            glowColor="#6ee7b7"
+            hoverTextColor="#d1fae5"
+          >
+            Summarise
+          </HoverButton>
+        </div>
+
+        <p className="text-xs text-zinc-600 mt-4">Free forever · Upgrade anytime</p>
+        <a href="#pricing" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 mt-4 hover:text-zinc-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded">
+          Or see pricing <ArrowRight className="w-3 h-3" />
+        </a>
+      </motion.div>
+    </section>
+  );
+}
