@@ -28,10 +28,9 @@ export function GlobeSection() {
             transition={{ duration: 0.6 }}
             className="order-1 md:order-2"
           >
-            <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">Global</p>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-5 text-zinc-900">
-              Knowledge has no<br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">borders.</span>
+              Knowledge has<br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">no borders.</span>
             </h2>
             <p className="text-zinc-500 text-base font-light leading-relaxed mb-6">
               Recall works with YouTube videos in any language. Creators, students, and researchers from over 120 countries use it to turn hours of content into minutes of insight.

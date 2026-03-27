@@ -22,7 +22,6 @@ export function Digest() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">Pro feature</p>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-5 text-zinc-900">
               Your week in<br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">knowledge.</span>

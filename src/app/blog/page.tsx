@@ -31,7 +31,6 @@ export default function BlogPage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">Blog</p>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-zinc-900">
             Learn to learn <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">better.</span>
           </h1>

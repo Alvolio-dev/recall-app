@@ -77,9 +77,8 @@ export function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">What people are saying</p>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-zinc-900">
-            Trusted by curious <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">minds.</span>
+            Trusted by <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">curious minds.</span>
           </h2>
           <p className="text-zinc-500 text-lg font-light max-w-md mx-auto">
             Students, researchers, creators, anyone who watches to learn.

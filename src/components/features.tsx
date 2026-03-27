@@ -34,9 +34,8 @@ export function Features() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">What it does</p>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-zinc-900">
-            One link does <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">a lot.</span>
+            One link <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">does a lot.</span>
           </h2>
           <p className="text-zinc-500 text-lg font-light max-w-md mx-auto">
             Summaries, takeaways, follow-ups, and more, all from one YouTube link.

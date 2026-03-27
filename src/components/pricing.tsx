@@ -39,8 +39,7 @@ export function Pricing() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">Pricing</p>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-zinc-900">Free to start. Pro to grow.</h2>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-zinc-900">Free to start. <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">Pro to grow.</span></h2>
           <p className="text-zinc-500 text-lg font-light mb-8">No credit card required. Upgrade when you&apos;re ready.</p>
 
           <div className="relative inline-flex items-center bg-white border border-zinc-200 rounded-full p-1 shadow-sm">

@@ -140,109 +140,123 @@ export function Demo() {
 
   return (
     <section id="demo" className="relative py-24 px-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+      <div className="max-w-3xl mx-auto">
+        {/* Header — centered */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="text-center mb-12"
         >
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">See it in action</p>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-zinc-900">
-            Same video.<br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">Three different outputs.</span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-zinc-900">
+            Same video.{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">Three outputs.</span>
           </h2>
-          <p className="text-zinc-500 text-base font-light leading-relaxed mb-4">
-            Switch between modes to see how the same video becomes a different kind of summary.
-          </p>
-          <p className="text-zinc-500 text-base font-light leading-relaxed">
-            Whether you need a quick verdict, the key ideas with timestamps, or a step-by-step action list, Recall adapts to how you learn.
+          <p className="text-zinc-500 text-base font-light leading-relaxed max-w-lg mx-auto">
+            Pick a mode and get a summary shaped around what you actually need — a quick verdict, the key ideas, or a step-by-step action list.
           </p>
         </motion.div>
 
+        {/* Demo — app frame */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="rounded-2xl border border-zinc-200 bg-white shadow-xl shadow-zinc-200/50 overflow-hidden"
         >
-        <div className="space-y-3">
-          {/* Video meta */}
-          <div className="flex items-center gap-4 p-4 bg-white border border-zinc-200 rounded-2xl shadow-sm">
-            <div className="w-14 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center flex-shrink-0 shadow-sm shadow-red-200" aria-hidden="true">
-              <Play className="w-3.5 h-3.5 fill-white text-white" />
+          {/* Top bar */}
+          <div className="flex items-center gap-2 px-5 py-3 border-b border-zinc-100 bg-zinc-50/80">
+            <div className="flex gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-zinc-300" />
+              <div className="w-2.5 h-2.5 rounded-full bg-zinc-300" />
+              <div className="w-2.5 h-2.5 rounded-full bg-zinc-300" />
             </div>
-            <div>
-              <p className="text-sm font-semibold text-zinc-900">The Ultimate Espresso Technique Guide</p>
-              <p className="text-xs text-zinc-400 mt-0.5">James Hoffmann · 41 minutes</p>
-            </div>
-          </div>
-
-          {/* Mode tabs */}
-          <div className="flex gap-2" role="tablist">
-            {modes.map((mode) => (
-              <button
-                key={mode.id}
-                onClick={() => setActiveMode(mode.id)}
-                role="tab"
-                aria-selected={activeMode === mode.id}
-                className={cn(
-                  "flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold border-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2",
-                  activeMode === mode.id
-                    ? colorMap[mode.color].tab
-                    : "bg-white border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-300"
-                )}
-              >
-                <mode.icon className="w-4 h-4" />
-                <span className="hidden sm:inline">{mode.label}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Output panel */}
-          <div className={cn(
-            "bg-white border-2 rounded-2xl p-7 min-h-[280px] shadow-sm transition-colors duration-300",
-            colorMap[activeColor].panel
-          )} role="tabpanel">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeMode}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.25 }}
-              >
-                {outputs[activeMode]}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Follow-up input */}
-          <div className="relative">
-            <label htmlFor="demo-followup" className="sr-only">Ask a follow-up question</label>
-            <div className="flex items-center bg-white border-2 border-zinc-200 rounded-2xl overflow-hidden shadow-sm focus-within:border-emerald-300 focus-within:shadow-[0_0_0_4px_rgba(16,185,129,0.08)] transition-all">
-              <div className="pl-4 text-zinc-300" aria-hidden="true">
-                <MessageSquare className="w-4 h-4" />
+            <div className="flex-1 flex justify-center">
+              <div className="flex items-center gap-2 px-4 py-1 rounded-lg bg-zinc-100 text-xs text-zinc-400">
+                <span>getrecall.app</span>
               </div>
-              <input
-                id="demo-followup"
-                type="text"
-                placeholder="Ask a follow-up, e.g. what grinder does he recommend?"
-                className="flex-1 min-w-0 bg-transparent px-3 py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none"
-              />
-              <button
-                className="m-2 w-9 h-9 rounded-xl bg-zinc-900 flex items-center justify-center hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
-                aria-label="Send follow-up question"
-              >
-                <ArrowRight className="w-4 h-4 text-white" />
-              </button>
             </div>
+            <div className="w-[46px]" />
           </div>
-          <p className="text-xs text-zinc-400 text-center">Free: 2 follow-ups per video · Pro: unlimited</p>
-        </div>
+
+          {/* App content */}
+          <div className="p-6 md:p-8 space-y-4">
+            {/* Video meta */}
+            <div className="flex items-center gap-4 p-4 bg-zinc-50 border border-zinc-100 rounded-xl">
+              <div className="w-12 h-9 rounded-lg bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center flex-shrink-0 shadow-sm shadow-red-200" aria-hidden="true">
+                <Play className="w-3 h-3 fill-white text-white" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-zinc-900 truncate">The Ultimate Espresso Technique Guide</p>
+                <p className="text-xs text-zinc-400 mt-0.5">James Hoffmann · 41 minutes</p>
+              </div>
+            </div>
+
+            {/* Mode tabs */}
+            <div className="flex gap-2" role="tablist">
+              {modes.map((mode) => (
+                <button
+                  key={mode.id}
+                  onClick={() => setActiveMode(mode.id)}
+                  role="tab"
+                  aria-selected={activeMode === mode.id}
+                  className={cn(
+                    "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold border-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2",
+                    activeMode === mode.id
+                      ? colorMap[mode.color].tab
+                      : "bg-white border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-300"
+                  )}
+                >
+                  <mode.icon className="w-4 h-4" />
+                  <span className="hidden sm:inline">{mode.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Output panel */}
+            <div className={cn(
+              "bg-white border rounded-xl p-6 md:p-7 min-h-[260px] transition-colors duration-300",
+              colorMap[activeColor].panel
+            )} role="tabpanel">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeMode}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  {outputs[activeMode]}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Follow-up input */}
+            <div className="relative">
+              <label htmlFor="demo-followup" className="sr-only">Ask a follow-up question</label>
+              <div className="flex items-center bg-zinc-50 border border-zinc-200 rounded-xl overflow-hidden focus-within:border-emerald-300 focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(16,185,129,0.08)] transition-all">
+                <div className="pl-4 text-zinc-300" aria-hidden="true">
+                  <MessageSquare className="w-4 h-4" />
+                </div>
+                <input
+                  id="demo-followup"
+                  type="text"
+                  placeholder="Ask a follow-up, e.g. what grinder does he recommend?"
+                  className="flex-1 min-w-0 bg-transparent px-3 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none"
+                />
+                <button
+                  className="m-1.5 w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+                  aria-label="Send follow-up question"
+                >
+                  <ArrowRight className="w-3.5 h-3.5 text-white" />
+                </button>
+              </div>
+            </div>
+            <p className="text-xs text-zinc-400 text-center pt-1">Free: 2 follow-ups per video · Pro: unlimited</p>
+          </div>
         </motion.div>
-        </div>
       </div>
     </section>
   );
