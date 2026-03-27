@@ -51,6 +51,7 @@ function VerdictOutput() {
 }
 
 function TakeawaysOutput() {
+  const [current, setCurrent] = useState(0);
   const items = [
     { n: 1, text: "Grind size is the single highest-leverage variable. A 1-click adjustment changes everything downstream.", ts: "3:12" },
     { n: 2, text: "Dose and yield form a ratio. 1:2 is standard; lighter roasts often need 1:2.5 or more.", ts: "8:45" },
@@ -59,32 +60,65 @@ function TakeawaysOutput() {
     { n: 5, text: "Calibrate by tasting, not by spec sheet. Most machines vary shot to shot.", ts: "31:55" },
   ];
 
+  const item = items[current];
+
   return (
     <div>
-      <div className="flex items-center gap-2 mb-5">
-        <div className="w-6 h-6 rounded-lg bg-violet-100 flex items-center justify-center">
-          <Star className="w-3 h-3 text-violet-600" />
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-lg bg-violet-100 flex items-center justify-center">
+            <Star className="w-3 h-3 text-violet-600" />
+          </div>
+          <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">5 key ideas</p>
         </div>
-        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">5 key ideas</p>
+        <div className="flex items-center gap-1.5">
+          {items.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={cn(
+                "w-1.5 h-1.5 rounded-full transition-all duration-200",
+                i === current ? "bg-zinc-900 w-4" : "bg-zinc-300 hover:bg-zinc-400"
+              )}
+            />
+          ))}
+        </div>
       </div>
-      <div className="space-y-4">
-        {items.map((item, i) => (
-          <motion.div
-            key={item.n}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1, duration: 0.3 }}
-            className="flex gap-3 group"
-          >
-            <div className="w-7 h-7 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
-              <span className="text-xs font-bold text-zinc-600">{item.n}</span>
-            </div>
-            <p className="text-[15px] text-zinc-800 leading-relaxed">
-              {item.text}{" "}
-              <button className="inline-flex items-center text-[11px] font-medium text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-full px-2 py-0.5 hover:bg-emerald-100 transition-colors align-middle">{item.ts}</button>
-            </p>
-          </motion.div>
-        ))}
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.2 }}
+          className="flex gap-3"
+        >
+          <div className="w-7 h-7 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span className="text-xs font-bold text-zinc-600">{item.n}</span>
+          </div>
+          <p className="text-[15px] text-zinc-800 leading-relaxed">
+            {item.text}{" "}
+            <button className="inline-flex items-center text-[11px] font-medium text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-full px-2 py-0.5 hover:bg-emerald-100 transition-colors align-middle">{item.ts}</button>
+          </p>
+        </motion.div>
+      </AnimatePresence>
+
+      <div className="flex gap-2 mt-5 pt-4 border-t border-zinc-100">
+        <button
+          onClick={() => setCurrent((c) => Math.max(0, c - 1))}
+          disabled={current === 0}
+          className="flex-1 py-2 rounded-lg text-xs font-medium border border-zinc-200 text-zinc-500 hover:bg-zinc-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => setCurrent((c) => Math.min(items.length - 1, c + 1))}
+          disabled={current === items.length - 1}
+          className="flex-1 py-2 rounded-lg text-xs font-medium bg-zinc-900 text-white hover:bg-zinc-800 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
