@@ -6,12 +6,12 @@ import { HoverButton } from "@/components/ui/hover-button";
 
 export function Hero() {
   return (
-    <div className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden">
+    <div className="relative w-full min-h-screen flex flex-col items-center justify-center">
       {/* Color blobs */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute right-[-15%] top-[-15%] w-[35%] h-[35%] rounded-full bg-emerald-400/25 blur-[120px]" />
         <div className="absolute right-[10%] top-[-5%] w-[20%] h-[20%] rounded-full bg-teal-500/15 blur-[100px]" />
-        <div className="absolute left-[-10%] bottom-[-15%] w-[35%] h-[35%] rounded-full bg-violet-400/20 blur-[120px]" />
+        <div className="absolute left-[0%] bottom-[-5%] w-[40%] h-[40%] rounded-full bg-violet-400/20 blur-[120px]" />
       </div>
 
       {/* Content */}
