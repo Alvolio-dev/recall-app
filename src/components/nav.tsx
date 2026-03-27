@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 import { MotionButton } from "@/components/ui/motion-button";
 import { Logo } from "@/components/ui/logo";
 
@@ -20,9 +21,9 @@ export function Nav() {
         <a href="#pricing" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
           Pricing
         </a>
-        <a href="/blog" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
+        <Link href="/blog" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
           Blog
-        </a>
+        </Link>
         <a href="#" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
           Sign in
         </a>
@@ -47,9 +48,9 @@ export function Nav() {
           <a href="#pricing" onClick={() => setOpen(false)} className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
             Pricing
           </a>
-          <a href="/blog" className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
+          <Link href="/blog" className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
             Blog
-          </a>
+          </Link>
           <a href="#" className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
             Sign in
           </a>

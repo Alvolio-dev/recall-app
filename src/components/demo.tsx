@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Star, ListOrdered, ArrowRight, Play, MessageSquare, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GlowCard } from "@/components/ui/glow-card";
 
 const modes = [
   { id: "v", label: "Worth my time?", icon: Clock, color: "emerald" },
@@ -37,7 +36,7 @@ function VerdictOutput() {
         <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">Verdict</p>
       </div>
       <p className="text-[15px] text-zinc-800 leading-relaxed mb-5">
-        <strong className="text-zinc-900 font-semibold">Worth watching</strong> if you&apos;re getting into espresso and want to understand extraction: the first 20 minutes are excellent. Skip the second half if you already own a decent grinder.
+        <strong className="text-zinc-900 font-semibold">Worth watching</strong>{" "}if you&apos;re getting into espresso and want to understand extraction: the first 20 minutes are excellent. Skip the second half if you already own a decent grinder.
       </p>
       <div className="flex flex-wrap gap-1.5 pt-5 border-t border-zinc-100 items-center">
         <span className="text-[11px] font-medium text-zinc-400 mr-0.5 uppercase tracking-wider">Covers</span>
@@ -168,7 +167,7 @@ export function Demo() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-        <GlowCard glowColor="green" className="shadow-lg space-y-3">
+        <div className="space-y-3">
           {/* Video meta */}
           <div className="flex items-center gap-4 p-4 bg-white border border-zinc-200 rounded-2xl shadow-sm">
             <div className="w-14 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center flex-shrink-0 shadow-sm shadow-red-200" aria-hidden="true">
@@ -241,7 +240,7 @@ export function Demo() {
             </div>
           </div>
           <p className="text-xs text-zinc-400 text-center">Free: 2 follow-ups per video · Pro: unlimited</p>
-        </GlowCard>
+        </div>
         </motion.div>
         </div>
       </div>

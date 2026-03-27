@@ -1,6 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description:
+    "Terms and conditions for using Recall.",
+  openGraph: {
+    title: "Terms of Service | Recall",
+    description: "Terms and conditions for using Recall.",
+  },
+};
 
 export default function TermsPage() {
   return (
@@ -64,7 +75,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">10. Contact</h2>
-            <p>Questions about these terms? Reach out via our <a href="/support" className="text-emerald-600 hover:underline">support page</a>.</p>
+            <p>Questions about these terms? Reach out via our <Link href="/support" className="text-emerald-600 hover:underline">support page</Link>.</p>
           </section>
         </div>
       </article>

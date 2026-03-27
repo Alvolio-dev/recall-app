@@ -13,8 +13,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Recall — Watch less. Remember more.",
-  description: "Paste any YouTube link and get a summary shaped around what you actually need.",
+  title: {
+    default: "Recall — Watch less. Remember more.",
+    template: "%s | Recall",
+  },
+  description:
+    "Paste any YouTube link and get a summary shaped around what you actually need.",
+  metadataBase: new URL("https://getrecall.app"),
+  openGraph: {
+    type: "website",
+    siteName: "Recall",
+    title: "Recall — Watch less. Remember more.",
+    description:
+      "Paste any YouTube link and get a summary shaped around what you actually need.",
+    url: "https://getrecall.app",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Recall — Watch less. Remember more.",
+    description:
+      "Paste any YouTube link and get a summary shaped around what you actually need.",
+  },
 };
 
 export default function RootLayout({

@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { BookOpen, Clock } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export interface BlogPost {
@@ -42,10 +43,12 @@ export function BlogCard({ post, className, index = 0 }: BlogCardProps) {
         <Card className="group relative h-full overflow-hidden rounded-2xl border-zinc-200/80 bg-white/70 backdrop-blur-md transition-all duration-300 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-500/5 cursor-pointer">
           {/* Image */}
           <div className="relative aspect-[16/9] overflow-hidden">
-            <img
+            <Image
               src={post.image}
               alt={post.title}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent opacity-40 transition-opacity duration-300 group-hover:opacity-20" />
 

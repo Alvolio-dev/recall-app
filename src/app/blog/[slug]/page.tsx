@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { posts } from "@/lib/blog-data";
 import Link from "next/link";
 import { ArrowLeft, Clock, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { Logo } from "@/components/ui/logo";
 import { motion } from "framer-motion";
 import { MotionButton } from "@/components/ui/motion-button";
@@ -25,6 +26,29 @@ export default function BlogPostPage() {
 
   return (
     <div className="min-h-screen bg-[#fafafa]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.excerpt,
+            image: post.image,
+            datePublished: new Date(post.date).toISOString(),
+            author: {
+              "@type": "Person",
+              name: post.author.name,
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "Recall",
+              url: "https://getrecall.app",
+            },
+            mainEntityOfPage: `https://getrecall.app/blog/${post.slug}`,
+          }),
+        }}
+      />
       <nav className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-8 h-16 bg-[#fafafa]/80 backdrop-blur-xl border-b border-zinc-200/60">
         <Link href="/"><Logo size="sm" /></Link>
         <Link
@@ -80,7 +104,9 @@ export default function BlogPostPage() {
 
           {/* Hero image */}
           <div className="rounded-2xl overflow-hidden mb-10 border border-zinc-200">
-            <img src={post.image} alt={post.title} className="w-full aspect-[2/1] object-cover" />
+            <div className="relative aspect-[2/1]">
+              <Image src={post.image} alt={post.title} fill sizes="(max-width: 768px) 100vw, 720px" className="object-cover" />
+            </div>
           </div>
 
           {/* Article body */}

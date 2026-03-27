@@ -1,6 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "How Recall collects, uses, and protects your data.",
+  openGraph: {
+    title: "Privacy Policy | Recall",
+    description: "How Recall collects, uses, and protects your data.",
+  },
+};
 
 export default function PrivacyPage() {
   return (
@@ -44,7 +55,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">6. Your rights</h2>
-            <p>You can request a copy of your data, correct inaccuracies, or delete your account and all associated data at any time. To make a request, contact us at <a href="/support" className="text-emerald-600 hover:underline">our support page</a>. We will respond within 30 days.</p>
+            <p>You can request a copy of your data, correct inaccuracies, or delete your account and all associated data at any time. To make a request, contact us at <Link href="/support" className="text-emerald-600 hover:underline">our support page</Link>. We will respond within 30 days.</p>
           </section>
 
           <section>
@@ -59,7 +70,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">9. Contact</h2>
-            <p>If you have questions about this privacy policy, please reach out via our <a href="/support" className="text-emerald-600 hover:underline">support page</a>.</p>
+            <p>If you have questions about this privacy policy, please reach out via our <Link href="/support" className="text-emerald-600 hover:underline">support page</Link>.</p>
           </section>
         </div>
       </article>

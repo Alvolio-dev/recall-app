@@ -5,6 +5,7 @@ import { BlogCard } from "@/components/ui/blog-card";
 import { posts, BlogPostWithBody } from "@/lib/blog-data";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
 import { Logo } from "@/components/ui/logo";
 
 export default function BlogPage() {
@@ -50,10 +51,12 @@ export default function BlogPage() {
             <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/70 backdrop-blur-md hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-500/5 transition-all duration-300 cursor-pointer">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="relative aspect-[16/9] md:aspect-auto overflow-hidden">
-                  <img
+                  <Image
                     src={posts[0].image}
                     alt={posts[0].title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div className="flex flex-col justify-center p-8 md:p-10">

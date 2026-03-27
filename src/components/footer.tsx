@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 
 export function Footer() {
@@ -25,9 +26,9 @@ export function Footer() {
         </div>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex gap-6">
-            <a href="/privacy" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">Privacy</a>
-            <a href="/terms" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">Terms</a>
-            <a href="/support" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">Support</a>
+            <Link href="/privacy" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">Privacy</Link>
+            <Link href="/terms" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">Terms</Link>
+            <Link href="/support" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">Support</Link>
           </div>
           <p className="text-sm text-zinc-400">&copy; 2026 Recall. Made in Sydney.</p>
         </div>
