@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { posts } from "@/lib/blog-data";
 import Link from "next/link";
-import { ArrowLeft, Clock } from "lucide-react";
+import { ArrowLeft, Clock, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { MotionButton } from "@/components/ui/motion-button";
 
@@ -37,12 +37,21 @@ export default function BlogPostPage() {
         </Link>
       </nav>
 
-      <article className="max-w-2xl mx-auto px-6 py-16">
+      <article className="max-w-3xl mx-auto px-6 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
+          {/* Breadcrumbs */}
+          <nav className="flex items-center gap-1.5 text-sm text-zinc-400 mb-6">
+            <Link href="/" className="hover:text-zinc-700 transition-colors">Home</Link>
+            <ChevronRight className="w-3 h-3" />
+            <Link href="/blog" className="hover:text-zinc-700 transition-colors">Blog</Link>
+            <ChevronRight className="w-3 h-3" />
+            <span className="text-zinc-600 truncate max-w-[200px]">{post.title}</span>
+          </nav>
+
           {/* Tags */}
           <div className="flex gap-2 mb-6">
             {post.tags.map((tag) => (
