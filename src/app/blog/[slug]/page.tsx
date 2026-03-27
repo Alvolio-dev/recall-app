@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { posts } from "@/lib/blog-data";
 import Link from "next/link";
 import { ArrowLeft, Clock, ChevronRight } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 import { motion } from "framer-motion";
 import { MotionButton } from "@/components/ui/motion-button";
 
@@ -25,9 +26,7 @@ export default function BlogPostPage() {
   return (
     <div className="min-h-screen bg-[#fafafa]">
       <nav className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-8 h-16 bg-[#fafafa]/80 backdrop-blur-xl border-b border-zinc-200/60">
-        <Link href="/" className="text-lg font-semibold tracking-tight text-zinc-900">
-          re<span className="text-emerald-600 italic">call</span>
-        </Link>
+        <Link href="/"><Logo size="sm" /></Link>
         <Link
           href="/blog"
           className="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
