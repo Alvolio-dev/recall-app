@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Plan {
+  FREE
+  PRO
+}
+
+enum TriageState {
+  INBOX
+  LATER
+  ARCHIVE
+}
+
+model User {
+  id               String    @id @default(cuid())
+  clerkId          String    @unique
+  email            String    @unique
+  plan             Plan      @default(FREE)
+  stripeCustomerId String?   @unique
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  summaries Summary[]
+  digests   Digest[]
+}
+
+model Summary {
+  id           String      @id @default(cuid())
+  userId       String
+  user         User        @relation(fields: [userId], references: [clerkId])
+
+  videoId      String
+  title        String
+  channel      String
+  duration     Int
+  thumbnailUrl String
+
+  verdict   Json?
+  takeaways Json?
+  steps     Json?
+
+  transcript String? @db.Text
+
+  triageState TriageState @default(INBOX)
+  tags        String[]
+  isFavorite  Boolean     @default(false)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  followUps FollowUp[]
+
+  @@unique([userId, videoId])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, triageState])
+}
+
+model FollowUp {
+  id        String   @id @default(cuid())
+  summaryId String
+  summary   Summary  @relation(fields: [summaryId], references: [id], onDelete: Cascade)
+  question  String
+  answer    String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model Digest {
+  id      String   @id @default(cuid())
+  userId  String
+  user    User     @relation(fields: [userId], references: [clerkId])
+  weekOf  DateTime
+  content Json
+  createdAt DateTime @default(now())
+
+  @@unique([userId, weekOf])
+  @@index([userId, weekOf(sort: Desc)])
+}

@@ -24,10 +24,12 @@ export function Nav() {
         <Link href="/blog" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
           Blog
         </Link>
-        <a href="#" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
+        <Link href="/sign-in" className="text-sm text-zinc-500 px-4 py-2 rounded-full hover:text-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
           Sign in
-        </a>
-        <MotionButton label="Try free" className="ml-2 w-36 bg-transparent" />
+        </Link>
+        <Link href="/sign-up">
+          <MotionButton label="Try free" className="ml-2 w-36 bg-transparent" />
+        </Link>
       </div>
 
       {/* Mobile toggle */}
@@ -51,12 +53,12 @@ export function Nav() {
           <Link href="/blog" className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
             Blog
           </Link>
-          <a href="#" className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
+          <Link href="/sign-in" className="text-sm text-zinc-500 px-4 py-3 rounded-xl hover:bg-zinc-100 hover:text-zinc-900 transition-colors">
             Sign in
-          </a>
-          <button className="text-sm font-medium text-white bg-zinc-900 px-5 py-3 rounded-xl hover:bg-zinc-800 transition-colors mt-1">
+          </Link>
+          <Link href="/sign-up" className="text-sm font-medium text-white bg-zinc-900 px-5 py-3 rounded-xl hover:bg-zinc-800 transition-colors mt-1 block text-center">
             Try free
-          </button>
+          </Link>
         </div>
       )}
     </nav>
