@@ -16,16 +16,6 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 mb-8"
-        >
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          <span className="text-xs font-medium text-emerald-700 tracking-wide">YouTube, finally understood</span>
-        </motion.div>
-
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,17 +37,6 @@ export function Hero() {
         >
           Paste any YouTube link and get a summary shaped around what you actually need.
         </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="flex flex-wrap gap-2 justify-center mb-8"
-        >
-          <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700">Worth my time?</span>
-          <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-violet-50 border border-violet-200 text-violet-700">Key takeaways</span>
-          <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-700">Step by step</span>
-        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

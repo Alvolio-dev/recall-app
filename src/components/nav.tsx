@@ -3,15 +3,14 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { MotionButton } from "@/components/ui/motion-button";
+import { Logo } from "@/components/ui/logo";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-8 h-16 bg-[#fafafa]/80 backdrop-blur-xl border-b border-zinc-200/60">
-      <div className="text-lg font-semibold tracking-tight text-zinc-900">
-        re<span className="text-emerald-600 italic">call</span>
-      </div>
+      <Logo size="sm" />
 
       {/* Desktop */}
       <div className="hidden md:flex items-center gap-1">

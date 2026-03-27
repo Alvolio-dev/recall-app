@@ -1,13 +1,13 @@
 "use client";
 
+import { Logo } from "@/components/ui/logo";
+
 export function Footer() {
   return (
     <footer className="bg-zinc-900 py-10 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-8 pb-8 border-b border-white/10">
-          <div className="text-lg font-semibold tracking-tight text-white">
-            re<span className="text-emerald-400 italic">call</span>
-          </div>
+          <Logo size="md" variant="dark" />
           <div className="max-w-xs w-full">
             <label htmlFor="footer-email" className="text-sm font-medium text-white mb-2 block">Get product updates</label>
             <div className="flex items-center bg-white/[0.06] border border-white/10 rounded-xl overflow-hidden focus-within:border-emerald-500/40 focus-within:shadow-[0_0_0_3px_rgba(16,185,129,0.15)] transition-all">
