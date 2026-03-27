@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { UserProfile } from "@clerk/nextjs";
+import { useUser, SignOutButton } from "@clerk/nextjs";
 import { Crown, Check, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -81,7 +81,7 @@ function SettingsContent() {
       )}
 
       {/* Subscription */}
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 mb-4">
+      <div className="rounded-2xl bg-white card-shadow p-6 mb-4">
         <div className="flex items-center gap-2 mb-4">
           <Crown className="w-4 h-4 text-emerald-600" />
           <h2 className="text-base font-semibold text-zinc-900">Subscription</h2>
@@ -171,21 +171,43 @@ function SettingsContent() {
         )}
       </div>
 
-      {/* Account (Clerk) */}
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6">
-        <h2 className="text-base font-semibold text-zinc-900 mb-4">Account</h2>
-        <UserProfile
-          routing="hash"
-          appearance={{
-            elements: {
-              rootBox: "w-full",
-              cardBox: "shadow-none border-0 w-full",
-              navbar: "hidden",
-              pageScrollBox: "p-0",
-            },
-          }}
-        />
-      </div>
+      {/* Account */}
+      <AccountCard />
+    </div>
+  );
+}
+
+function AccountCard() {
+  const { user } = useUser();
+
+  return (
+    <div className="rounded-2xl bg-white card-shadow p-6">
+      <h2 className="text-base font-semibold text-zinc-900 mb-4">Account</h2>
+      {user ? (
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            {user.imageUrl && (
+              <img
+                src={user.imageUrl}
+                alt={user.fullName || "Avatar"}
+                className="w-10 h-10 rounded-full ring-1 ring-black/5"
+              />
+            )}
+            <div>
+              <p className="text-sm font-medium text-zinc-900">{user.fullName}</p>
+              <p className="text-xs text-zinc-400">{user.primaryEmailAddress?.emailAddress}</p>
+            </div>
+          </div>
+          <hr className="border-zinc-100" />
+          <SignOutButton>
+            <button className="text-sm text-zinc-500 hover:text-red-500 transition-colors">
+              Sign out
+            </button>
+          </SignOutButton>
+        </div>
+      ) : (
+        <p className="text-sm text-zinc-400">Loading...</p>
+      )}
     </div>
   );
 }

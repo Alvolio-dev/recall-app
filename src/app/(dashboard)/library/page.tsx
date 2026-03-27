@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { PlusCircle as PlusIcon } from "lucide-react";
 import { Search, LayoutGrid, List, PlusCircle, Clock, Inbox, BookmarkCheck, Archive } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -123,7 +124,7 @@ export default function LibraryPage() {
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="rounded-2xl border border-zinc-200 bg-white p-4 animate-pulse">
+            <div key={i} className="rounded-2xl bg-white card-shadow p-4 animate-pulse">
               <div className="aspect-video rounded-lg bg-zinc-100 mb-3" />
               <div className="h-4 bg-zinc-100 rounded w-3/4 mb-2" />
               <div className="h-3 bg-zinc-100 rounded w-1/2" />
@@ -131,11 +132,11 @@ export default function LibraryPage() {
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-2xl border border-zinc-200 bg-white p-12 text-center">
-          <div className="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center mx-auto mb-4">
-            <PlusCircle className="w-6 h-6 text-zinc-400" />
+        <div className="rounded-2xl border-2 border-dashed border-zinc-200 bg-white/50 p-12 text-center">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-emerald-200/50">
+            <PlusCircle className="w-6 h-6 text-white" />
           </div>
-          <p className="text-sm text-zinc-500 mb-4">
+          <p className="text-sm text-zinc-500 mb-5">
             {summaries.length === 0
               ? "No summaries yet. Create your first one."
               : "No summaries match your search."}
@@ -143,7 +144,7 @@ export default function LibraryPage() {
           {summaries.length === 0 && (
             <Link
               href="/new"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:shadow-md hover:shadow-emerald-200/50 transition-all"
             >
               <PlusCircle className="w-4 h-4" />
               New summary
@@ -160,7 +161,7 @@ export default function LibraryPage() {
               transition={{ delay: i * 0.05 }}
             >
               <Link href={`/summary/${summary.id}`}>
-                <div className="group rounded-2xl border border-zinc-200 bg-white overflow-hidden hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100/50 transition-all duration-200 cursor-pointer">
+                <div className="group rounded-2xl bg-white card-shadow card-shadow-emerald overflow-hidden transition-all duration-200 cursor-pointer">
                   <div className="aspect-video bg-zinc-100 relative overflow-hidden">
                     <img
                       src={summary.thumbnailUrl}
@@ -207,7 +208,7 @@ export default function LibraryPage() {
               transition={{ delay: i * 0.03 }}
             >
               <Link href={`/summary/${summary.id}`}>
-                <div className="group flex items-center gap-4 p-3 rounded-xl border border-zinc-200 bg-white hover:border-emerald-300 hover:shadow-sm transition-all cursor-pointer">
+                <div className="group flex items-center gap-4 p-3 rounded-xl bg-white card-shadow card-shadow-emerald transition-all cursor-pointer">
                   <div className="w-24 h-16 rounded-lg bg-zinc-100 overflow-hidden flex-shrink-0">
                     <img
                       src={summary.thumbnailUrl}

@@ -1,10 +1,21 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Globe } from "lucide-react";
 import { HoverButton } from "@/components/ui/hover-button";
 
 export function Hero() {
+  const router = useRouter();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const input = (e.target as HTMLFormElement).elements.namedItem("hero-url") as HTMLInputElement;
+    if (input.value.trim()) {
+      router.push(`/try?url=${encodeURIComponent(input.value.trim())}`);
+    }
+  };
+
   return (
     <div className="relative w-full min-h-screen flex flex-col items-center justify-center">
       {/* Color blobs */}
@@ -45,12 +56,13 @@ export function Hero() {
           className="w-full max-w-lg"
         >
           <label htmlFor="hero-url" className="sr-only">YouTube URL</label>
-          <div className="flex items-center bg-white border border-zinc-200 rounded-2xl shadow-sm focus-within:border-emerald-400 focus-within:shadow-[0_0_0_3px_rgba(16,185,129,0.1)] transition-all">
+          <form onSubmit={handleSubmit} className="flex items-center bg-white border border-zinc-200 rounded-2xl shadow-sm focus-within:border-emerald-400 focus-within:shadow-[0_0_0_3px_rgba(16,185,129,0.1)] transition-all">
             <div className="pl-4 text-zinc-400">
               <Globe className="w-4 h-4" />
             </div>
             <input
               id="hero-url"
+              name="hero-url"
               type="url"
               placeholder="Paste a YouTube URL…"
               className="flex-1 min-w-0 bg-transparent px-3 py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none"
@@ -58,7 +70,7 @@ export function Hero() {
             <HoverButton className="m-1.5 px-5 py-2.5 text-sm whitespace-nowrap">
               Summarise
             </HoverButton>
-          </div>
+          </form>
         </motion.div>
       </div>
     </div>

@@ -32,3 +32,25 @@ body {
   background: rgba(16, 185, 129, 0.15);
   color: #065f46;
 }
+
+/* Premium card shadows */
+.card-shadow {
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+}
+.card-shadow-hover:hover {
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.06);
+}
+.card-shadow-emerald:hover {
+  box-shadow: 0 0 0 1px rgba(16,185,129,0.15), 0 4px 12px rgba(16,185,129,0.08);
+}
+
+/* Shimmer skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, #f4f4f5 25%, #e4e4e7 50%, #f4f4f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
