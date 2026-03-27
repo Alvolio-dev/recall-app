@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Clock, Star, ListOrdered, Loader2, Play, AlertCircle } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { SummaryPanel } from "@/components/dashboard/summary-output";
 import { formatDuration } from "@/lib/youtube";
@@ -39,6 +40,32 @@ export default function NewSummaryPage() {
   const [transcript, setTranscript] = useState<string | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [results, setResults] = useState<Record<string, any>>({});
+  const [savedId, setSavedId] = useState<string | null>(null);
+
+  const saveToLibrary = async (newResults: Record<string, unknown>) => {
+    if (!videoMeta || savedId) return;
+    try {
+      const res = await fetch("/api/summaries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          videoId: videoMeta.videoId,
+          title: videoMeta.title,
+          channel: videoMeta.channel,
+          duration: videoMeta.duration,
+          thumbnailUrl: videoMeta.thumbnailUrl,
+          transcript,
+          ...newResults,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setSavedId(data.id);
+      }
+    } catch {
+      // Silent fail on save — summary still visible
+    }
+  };
 
   const fetchTranscript = async () => {
     if (!url.trim()) return;
@@ -91,7 +118,12 @@ export default function NewSummaryPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to generate summary");
 
-      setResults((prev) => ({ ...prev, [mode]: data.result }));
+      const newResults = { ...results, [mode]: data.result };
+      setResults(newResults);
+      // Auto-save first summary to library
+      if (!savedId) {
+        saveToLibrary(newResults);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -243,6 +275,22 @@ export default function NewSummaryPage() {
                 <Play className="w-4 h-4" />
                 Generate summary
               </button>
+            )}
+
+            {/* Saved indicator */}
+            {savedId && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center"
+              >
+                <Link
+                  href={`/summary/${savedId}`}
+                  className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                >
+                  Saved to library. View summary →
+                </Link>
+              </motion.div>
             )}
           </motion.div>
         )}
