@@ -5,7 +5,7 @@ export const posts: BlogPost[] = [
     slug: "stop-wasting-time-on-youtube",
     title: "How I stopped wasting 6 hours a week on YouTube",
     excerpt: "I tracked my YouTube habits for a month. The results were embarrassing — but they led me to a workflow that actually respects my time.",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80",
     author: { name: "Alex Chen", avatar: "", initials: "AC" },
     date: "Mar 22, 2026",
     readTime: "6 min read",
