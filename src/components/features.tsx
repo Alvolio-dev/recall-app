@@ -83,7 +83,7 @@ const featureData: FeatureNode[] = [
 
 export function Features() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [autoRotate, setAutoRotate] = useState(true);
+  const [autoRotate, setAutoRotate] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const angleRef = useRef(0);
