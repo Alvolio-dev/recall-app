@@ -83,26 +83,24 @@ export default function BlogPostPage() {
             <img src={post.image} alt={post.title} className="w-full aspect-[2/1] object-cover" />
           </div>
 
-          {/* Article body (placeholder) */}
-          <div className="prose prose-zinc max-w-none">
-            <p className="text-lg text-zinc-600 leading-relaxed mb-6">
+          {/* Article body */}
+          <div className="max-w-none">
+            <p className="text-lg text-zinc-600 leading-relaxed mb-8">
               {post.excerpt}
             </p>
-            <p className="text-zinc-500 leading-relaxed mb-6">
-              This is where the full article content would go. For now, this is a placeholder to show the layout and typography. The actual content would be pulled from a CMS or markdown files.
-            </p>
-            <h2 className="text-xl font-bold text-zinc-900 mt-10 mb-4">The problem with passive watching</h2>
-            <p className="text-zinc-500 leading-relaxed mb-6">
-              Most of us treat YouTube like background noise. We hit play, half-watch, and move on. But the videos we choose to watch — the tutorials, the lectures, the deep dives — deserve better. They contain ideas we wanted to learn. The gap isn&apos;t motivation. It&apos;s the lack of a system.
-            </p>
-            <h2 className="text-xl font-bold text-zinc-900 mt-10 mb-4">A better approach</h2>
-            <p className="text-zinc-500 leading-relaxed mb-6">
-              What if every video you watched came with a summary tailored to your needs? Not a generic transcript, but the actual ideas — distilled, timestamped, and ready to reference later. That&apos;s what Recall does, and it changes the way you think about video content entirely.
-            </p>
-            <h2 className="text-xl font-bold text-zinc-900 mt-10 mb-4">Try it yourself</h2>
-            <p className="text-zinc-500 leading-relaxed mb-6">
-              Paste any YouTube link into Recall and see the difference. No account needed, no credit card. Just the ideas that matter.
-            </p>
+            {post.body?.map((block, i) => {
+              switch (block.type) {
+                case "h2":
+                  return <h2 key={i} className="text-xl font-bold text-zinc-900 mt-10 mb-4">{block.text}</h2>;
+                case "h3":
+                  return <h3 key={i} className="text-lg font-semibold text-zinc-800 mt-8 mb-3">{block.text}</h3>;
+                case "quote":
+                  return <blockquote key={i} className="border-l-2 border-emerald-400 pl-4 my-6 text-zinc-600 italic">{block.text}</blockquote>;
+                case "p":
+                default:
+                  return <p key={i} className="text-zinc-500 leading-relaxed mb-6">{block.text}</p>;
+              }
+            })}
           </div>
 
           {/* CTA */}

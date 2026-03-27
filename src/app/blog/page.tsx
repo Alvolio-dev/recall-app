@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BlogCard } from "@/components/ui/blog-card";
-import { posts } from "@/lib/blog-data";
+import { posts, BlogPostWithBody } from "@/lib/blog-data";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
