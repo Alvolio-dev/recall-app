@@ -12,10 +12,21 @@ export function GlobeSection() {
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex justify-center order-2 md:order-1"
+          >
+            <RotatingEarth width={450} height={450} />
+          </motion.div>
+
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="order-1 md:order-2"
           >
             <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">Global</p>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-5 text-zinc-900">
@@ -40,16 +51,6 @@ export function GlobeSection() {
                 <p className="text-xs text-zinc-400 mt-0.5">languages supported</p>
               </div>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex justify-center"
-          >
-            <RotatingEarth width={450} height={450} />
           </motion.div>
         </div>
       </div>
