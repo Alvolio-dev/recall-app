@@ -59,7 +59,6 @@ export function Hero() {
               Summarise
             </HoverButton>
           </div>
-          <p className="text-xs text-zinc-400 mt-3">No account needed · Free forever</p>
         </motion.div>
       </div>
     </div>

@@ -62,10 +62,10 @@ export function Features() {
         >
           <p className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-400 mb-4">What it does</p>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-zinc-900">
-            Three modes. <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">One link.</span>
+            One link does <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-600">a lot.</span>
           </h2>
           <p className="text-zinc-500 text-lg font-light max-w-md mx-auto">
-            Three ways to summarise. Plus the tools to build on what you learn.
+            Summaries, takeaways, follow-ups, and more — all from one YouTube link.
           </p>
         </motion.div>
 
