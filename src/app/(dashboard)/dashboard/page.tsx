@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { formatDuration } from "@/lib/youtube";
 import { CountUp } from "@/components/ui/count-up";
+import { Onboarding } from "@/components/dashboard/onboarding";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Summary = Record<string, any>;
@@ -197,6 +198,9 @@ export default function DashboardPage() {
           </motion.div>
         ))}
       </div>
+
+      {/* Onboarding */}
+      <Onboarding summaryCount={summaries.length} />
 
       {/* Recent summaries */}
       <Section title="Recent" href="/library" items={recent} />

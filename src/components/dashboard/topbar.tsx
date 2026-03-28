@@ -2,6 +2,7 @@
 
 import { UserButton } from "@clerk/nextjs";
 import { Logo } from "@/components/ui/logo";
+import { Search } from "lucide-react";
 import Link from "next/link";
 
 export function Topbar() {
@@ -10,7 +11,20 @@ export function Topbar() {
       <Link href="/dashboard">
         <Logo size="sm" />
       </Link>
-      <UserButton />
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() =>
+            window.dispatchEvent(
+              new KeyboardEvent("keydown", { key: "k", metaKey: true })
+            )
+          }
+          className="p-2 rounded-lg text-zinc-400 hover:text-zinc-600 transition-colors"
+          aria-label="Search"
+        >
+          <Search className="w-5 h-5" />
+        </button>
+        <UserButton />
+      </div>
     </header>
   );
 }

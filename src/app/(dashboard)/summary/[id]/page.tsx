@@ -16,10 +16,12 @@ import {
   Trash2,
   Loader2,
   Heart,
+  Share2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SummaryPanel } from "@/components/dashboard/summary-output";
 import { FollowUpChat } from "@/components/dashboard/follow-up-chat";
+import { SummaryNotes } from "@/components/dashboard/summary-notes";
 import { formatDuration } from "@/lib/youtube";
 import Link from "next/link";
 
@@ -179,8 +181,27 @@ export default function SummaryDetailPage() {
 
   if (loading) {
     return (
-      <div className="max-w-3xl mx-auto flex items-center justify-center py-24">
-        <Loader2 className="w-6 h-6 text-zinc-400 animate-spin" />
+      <div className="max-w-3xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <div className="h-4 w-16 rounded animate-shimmer" />
+          <div className="flex gap-2">
+            <div className="w-9 h-9 rounded-lg animate-shimmer" />
+            <div className="w-9 h-9 rounded-lg animate-shimmer" />
+          </div>
+        </div>
+        <div className="flex items-center gap-4 p-4 bg-white rounded-xl card-shadow mb-4">
+          <div className="w-24 h-16 rounded-lg animate-shimmer" />
+          <div className="flex-1">
+            <div className="h-4 w-3/4 rounded animate-shimmer mb-2" />
+            <div className="h-3 w-1/3 rounded animate-shimmer" />
+          </div>
+        </div>
+        <div className="flex gap-2 mb-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex-1 h-11 rounded-xl animate-shimmer" />
+          ))}
+        </div>
+        <div className="h-64 rounded-xl animate-shimmer" />
       </div>
     );
   }
@@ -220,9 +241,21 @@ export default function SummaryDetailPage() {
             <Heart className={cn("w-4 h-4", summary.isFavorite && "fill-current")} />
           </button>
           <button
+            onClick={async () => {
+              const text = `${summary.title} by ${summary.channel}\n\n${summary.verdict?.text || ""}\n\nSummarised with Recall`;
+              await navigator.clipboard.writeText(text);
+              toast("Summary copied to clipboard");
+            }}
+            className="p-2 rounded-lg border border-zinc-200 text-zinc-400 hover:text-zinc-700 transition-colors"
+            aria-label="Share summary"
+          >
+            <Share2 className="w-4 h-4" />
+          </button>
+          <button
             onClick={handleExport}
             disabled={exporting}
             className="p-2 rounded-lg border border-zinc-200 text-zinc-400 hover:text-zinc-700 transition-colors disabled:opacity-40"
+            aria-label="Export to Markdown"
           >
             <Download className="w-4 h-4" />
           </button>
@@ -327,6 +360,11 @@ export default function SummaryDetailPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Personal notes */}
+      <div className="mb-6">
+        <SummaryNotes summaryId={summary.id} initialNotes={summary.notes || ""} />
+      </div>
 
       {/* Follow-up chat */}
       {summary.transcript && (
