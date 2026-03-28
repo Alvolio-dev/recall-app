@@ -26,6 +26,7 @@ export function Footer() {
         </div>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex gap-6">
+            <Link href="/faq" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">FAQ</Link>
             <Link href="/privacy" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">Privacy</Link>
             <Link href="/terms" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">Terms</Link>
             <Link href="/support" className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors">Support</Link>

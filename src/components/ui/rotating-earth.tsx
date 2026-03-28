@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
+import { geoOrthographic, geoPath, geoBounds, geoGraticule } from "d3-geo";
+import { timer } from "d3-timer";
 
 interface RotatingEarthProps {
   width?: number;
@@ -31,13 +32,12 @@ export default function RotatingEarth({ width = 500, height = 500, className = "
     canvas.style.height = `${containerHeight}px`;
     context.scale(dpr, dpr);
 
-    const projection = d3
-      .geoOrthographic()
+    const projection = geoOrthographic()
       .scale(radius)
       .translate([containerWidth / 2, containerHeight / 2])
       .clipAngle(90);
 
-    const path = d3.geoPath().projection(projection).context(context);
+    const path = geoPath().projection(projection).context(context);
 
     const pointInPolygon = (point: [number, number], polygon: number[][]): boolean => {
       const [x, y] = point;
@@ -76,7 +76,7 @@ export default function RotatingEarth({ width = 500, height = 500, className = "
 
     const generateDotsInPolygon = (feature: any, dotSpacing = 16) => {
       const dots: [number, number][] = [];
-      const bounds = d3.geoBounds(feature);
+      const bounds = geoBounds(feature);
       const [[minLng, minLat], [maxLng, maxLat]] = bounds;
       const stepSize = dotSpacing * 0.08;
       for (let lng = minLng; lng <= maxLng; lng += stepSize) {
@@ -108,7 +108,7 @@ export default function RotatingEarth({ width = 500, height = 500, className = "
 
       if (landFeatures) {
         // Graticule
-        const graticule = d3.geoGraticule();
+        const graticule = geoGraticule();
         context.beginPath();
         path(graticule());
         context.strokeStyle = "#d4d4d8";
@@ -169,7 +169,7 @@ export default function RotatingEarth({ width = 500, height = 500, className = "
       }
     };
 
-    const rotationTimer = d3.timer(rotate);
+    const rotationTimer = timer(rotate);
 
     const startDrag = (startX: number, startY: number) => {
       autoRotate = false;

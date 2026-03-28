@@ -9,17 +9,18 @@ const schema = z.object({
   title: z.string(),
   channel: z.string(),
   transcript: z.string().min(1),
+  limited: z.boolean().optional(),
 });
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { mode, title, channel, transcript } = schema.parse(body);
+    const { mode, title, channel, transcript, limited } = schema.parse(body);
 
     const { text } = await generateText({
       model: anthropic("claude-sonnet-4-20250514"),
-      system: buildSystemPrompt(mode),
-      prompt: buildUserPrompt(title, channel, transcript),
+      system: buildSystemPrompt(mode, limited),
+      prompt: buildUserPrompt(title, channel, transcript, limited),
       maxOutputTokens: 1500,
       temperature: 0.3,
     });

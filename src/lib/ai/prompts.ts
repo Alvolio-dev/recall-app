@@ -40,24 +40,43 @@ Create 4-8 clear, actionable steps that someone could follow. Each step should b
 
 Only output valid JSON, nothing else.`;
 
-export function buildSystemPrompt(mode: string): string {
+const LIMITED_SUFFIX = `
+
+IMPORTANT: You are working from the video's title and description only — NOT a full transcript. Be upfront that your analysis is based on limited information. Do not fabricate specific quotes, timestamps, or details that aren't in the description. Keep your response shorter and more cautious than usual.`;
+
+export function buildSystemPrompt(mode: string, limited?: boolean): string {
+  let prompt: string;
   switch (mode) {
     case "verdict":
-      return VERDICT_PROMPT;
+      prompt = VERDICT_PROMPT;
+      break;
     case "takeaways":
-      return TAKEAWAYS_PROMPT;
+      prompt = TAKEAWAYS_PROMPT;
+      break;
     case "steps":
-      return STEPS_PROMPT;
+      prompt = STEPS_PROMPT;
+      break;
     default:
-      return VERDICT_PROMPT;
+      prompt = VERDICT_PROMPT;
   }
+  return limited ? prompt + LIMITED_SUFFIX : prompt;
 }
 
 export function buildUserPrompt(
   title: string,
   channel: string,
-  transcript: string
+  transcript: string,
+  limited?: boolean,
 ): string {
+  if (limited) {
+    return `Video: "${title}" by ${channel}
+
+Description:
+${transcript}
+
+Note: No transcript was available for this video. Summarise based on the title and description only.`;
+  }
+
   // Truncate transcript to ~25K chars to stay within context limits
   const truncated =
     transcript.length > 25000

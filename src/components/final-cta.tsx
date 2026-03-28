@@ -54,7 +54,7 @@ export function FinalCta() {
           </HoverButton>
         </form>
 
-        <p className="text-xs text-zinc-400 mt-4">Free forever · Upgrade anytime</p>
+        <p className="text-xs text-zinc-400 mt-4">First summary free · No sign-up required</p>
       </motion.div>
     </section>
   );

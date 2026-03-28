@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { extractVideoId, fetchVideoMetadata, fetchTranscript } from "@/lib/youtube";
+import {
+  extractVideoId,
+  fetchVideoMetadata,
+  fetchTranscript,
+  fetchVideoPageData,
+} from "@/lib/youtube";
+import { transcribeAudio } from "@/lib/transcribe";
 
 const schema = z.object({
   url: z.string().min(1, "URL is required"),
 });
+
+export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,20 +27,47 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const [metadata, transcript] = await Promise.all([
-      fetchVideoMetadata(videoId),
-      fetchTranscript(videoId),
-    ]);
+    const metadata = await fetchVideoMetadata(videoId);
 
-    // Update duration from transcript if we got it
-    if (transcript.duration > 0) {
-      metadata.duration = transcript.duration;
+    // 1. Try YouTube's built-in transcript
+    try {
+      const transcript = await fetchTranscript(videoId);
+
+      if (transcript.duration > 0) {
+        metadata.duration = transcript.duration;
+      }
+
+      return NextResponse.json({
+        metadata,
+        transcript: transcript.fullText,
+        segments: transcript.segments,
+        limited: false,
+      });
+    } catch {
+      // Transcript unavailable — try audio transcription
     }
 
+    // 2. Try audio transcription via Groq Whisper (free)
+    const pageData = await fetchVideoPageData(videoId);
+
+    if (pageData.audioUrl) {
+      const audioTranscript = await transcribeAudio(pageData.audioUrl);
+      if (audioTranscript && audioTranscript.length > 50) {
+        return NextResponse.json({
+          metadata,
+          transcript: audioTranscript,
+          segments: [],
+          limited: false,
+        });
+      }
+    }
+
+    // 3. Fall back to description only
     return NextResponse.json({
       metadata,
-      transcript: transcript.fullText,
-      segments: transcript.segments,
+      transcript: pageData.description || null,
+      segments: [],
+      limited: true,
     });
   } catch (error) {
     const message =

@@ -10,12 +10,27 @@ import {
   Loader2,
   AlertCircle,
   Info,
+  Sparkles,
 } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { SummaryPanel } from "@/components/dashboard/summary-output";
 import { FollowUpChat } from "@/components/dashboard/follow-up-chat";
 import { GenerationProgress } from "@/components/dashboard/generation-progress";
 import { formatDuration } from "@/lib/youtube";
+
+const FREE_SUMMARY_LIMIT = 1;
+const STORAGE_KEY = "recall_summary_count";
+
+function getSummaryCount(): number {
+  if (typeof window === "undefined") return 0;
+  return parseInt(localStorage.getItem(STORAGE_KEY) || "0", 10);
+}
+
+function incrementSummaryCount(): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(STORAGE_KEY, String(getSummaryCount() + 1));
+}
 
 type ProgressStep = "fetching" | "analysing" | "generating" | "done";
 
@@ -66,6 +81,7 @@ interface SummaryFlowProps {
   onSaved?: (id: string) => void;
   showFollowUp?: boolean;
   saveToLibrary?: boolean;
+  isPro?: boolean;
 }
 
 export function SummaryFlow({
@@ -73,6 +89,7 @@ export function SummaryFlow({
   onSaved,
   showFollowUp = false,
   saveToLibrary = false,
+  isPro = false,
 }: SummaryFlowProps) {
   const [url, setUrl] = useState(initialUrl);
   const [activeMode, setActiveMode] = useState<Mode>("verdict");
@@ -87,6 +104,8 @@ export function SummaryFlow({
   const [showModeInfo, setShowModeInfo] = useState(false);
   const [progressStep, setProgressStep] = useState<ProgressStep | null>(null);
   const [previewId, setPreviewId] = useState<string | null>(null);
+  const [limited, setLimited] = useState(false);
+  const [hitFreeLimit, setHitFreeLimit] = useState(() => getSummaryCount() >= FREE_SUMMARY_LIMIT);
 
   // Extract video ID for thumbnail preview as user types
   useEffect(() => {
@@ -126,7 +145,7 @@ export function SummaryFlow({
   );
 
   const summarize = useCallback(
-    async (mode: Mode, meta: VideoMeta, trans: string) => {
+    async (mode: Mode, meta: VideoMeta, trans: string, isLimited?: boolean) => {
       setActiveMode(mode);
       setSummarizing(true);
       setError(null);
@@ -140,6 +159,7 @@ export function SummaryFlow({
             title: meta.title,
             channel: meta.channel,
             transcript: trans,
+            limited: isLimited,
           }),
         });
         const data = await res.json();
@@ -166,6 +186,12 @@ export function SummaryFlow({
       const targetUrl = url.trim();
       if (!targetUrl) return;
 
+      // Free usage limit
+      if (!isPro && getSummaryCount() >= FREE_SUMMARY_LIMIT) {
+        setHitFreeLimit(true);
+        return;
+      }
+
       // Client-side URL validation
       const ytPattern = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/live\/|youtube\.com\/shorts\/)[a-zA-Z0-9_-]{11}/;
       if (!ytPattern.test(targetUrl) && !/^[a-zA-Z0-9_-]{11}$/.test(targetUrl)) {
@@ -179,6 +205,7 @@ export function SummaryFlow({
       setTranscript(null);
       setResults({});
       setSavedId(null);
+      setLimited(false);
       setProgressStep("fetching");
 
       try {
@@ -193,12 +220,20 @@ export function SummaryFlow({
         if (!res.ok)
           throw new Error(data.error || "Failed to fetch transcript");
 
+        const isLimited = data.limited === true;
+
+        if (isLimited && !data.transcript) {
+          throw new Error("This video has no transcript or description available to summarise.");
+        }
+
         setVideoMeta(data.metadata);
         setTranscript(data.transcript);
+        setLimited(isLimited);
         setLoading(false);
         setProgressStep("generating");
 
-        await summarize("verdict", data.metadata, data.transcript);
+        await summarize("verdict", data.metadata, data.transcript, isLimited);
+        if (!isPro) incrementSummaryCount();
         setProgressStep("done");
         setTimeout(() => setProgressStep(null), 500);
       } catch (err) {
@@ -216,7 +251,7 @@ export function SummaryFlow({
       return;
     }
     if (videoMeta && transcript) {
-      summarize(mode, videoMeta, transcript);
+      summarize(mode, videoMeta, transcript, limited);
     }
   };
 
@@ -291,6 +326,32 @@ export function SummaryFlow({
         )}
       </AnimatePresence>
 
+      {/* Free limit reached */}
+      {hitFreeLimit && !videoMeta && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-800 p-8 text-center"
+        >
+          <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+            <Sparkles className="w-6 h-6 text-emerald-400" />
+          </div>
+          <h3 className="text-lg font-semibold text-white mb-2">
+            You&apos;ve used your free summary
+          </h3>
+          <p className="text-sm text-zinc-400 mb-6 max-w-sm mx-auto">
+            Upgrade to Pro for unlimited summaries, follow-up questions, your saved library, and weekly digests.
+          </p>
+          <Link
+            href="/sign-up"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
+          >
+            Get Pro — $2.99/mo
+          </Link>
+          <p className="text-xs text-zinc-500 mt-3">7-day free trial · Cancel anytime</p>
+        </motion.div>
+      )}
+
       {/* Progress */}
       {progressStep && progressStep !== "done" && !videoMeta && (
         <GenerationProgress step={progressStep} />
@@ -324,6 +385,19 @@ export function SummaryFlow({
                 </p>
               </div>
             </div>
+
+            {/* Limited transcript notice */}
+            {limited && (
+              <div className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-800">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-500" />
+                <div>
+                  <p className="font-medium">No transcript available</p>
+                  <p className="text-amber-600 text-xs mt-0.5">
+                    This summary is based on the video title and description only, so it may be less detailed than usual.
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Mode tabs */}
             <div>
@@ -405,7 +479,7 @@ export function SummaryFlow({
             )}
 
             {/* Follow-up chat */}
-            {showFollowUp && transcript && Object.keys(results).length > 0 && (
+            {showFollowUp && transcript && !limited && Object.keys(results).length > 0 && (
               <FollowUpChat
                 transcript={transcript}
                 title={videoMeta.title}

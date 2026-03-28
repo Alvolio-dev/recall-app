@@ -272,7 +272,7 @@ export function Demo() {
                 </button>
               </div>
             </div>
-            <p className="text-xs text-zinc-400 text-center pt-1">Free: 2 follow-ups per video · Pro: unlimited</p>
+            <p className="text-xs text-zinc-400 text-center pt-1">Follow-up questions available with Pro</p>
           </div>
         </motion.div>
       </div>

@@ -30,7 +30,7 @@ export function Hero() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
           className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
         >
           <span className="text-zinc-900">Watch less.</span>
@@ -43,7 +43,7 @@ export function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           className="text-base sm:text-lg text-zinc-500 font-light mb-8 max-w-md mx-auto leading-relaxed"
         >
           Paste any YouTube link and get a summary shaped around what you actually need.
@@ -52,7 +52,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           className="w-full max-w-lg"
         >
           <label htmlFor="hero-url" className="sr-only">YouTube URL</label>

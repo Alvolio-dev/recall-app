@@ -9,19 +9,20 @@ import { cn } from "@/lib/utils";
 import { HoverButton } from "@/components/ui/hover-button";
 
 const freeFeatures = [
-  { text: "Unlimited summaries", included: true },
+  { text: "1 free summary", included: true },
   { text: "All 3 modes", included: true },
-  { text: "2 follow-up questions per video", included: true },
+  { text: "No account required", included: true },
   { text: "Saved library", included: false },
+  { text: "Follow-up questions", included: false },
   { text: "Weekly digest email", included: false },
   { text: "Export to Markdown / Notion", included: false },
-  { text: "Cross-video topic synthesis", included: false },
 ];
 
 const proFeatures = [
-  "Everything in Free",
-  "Saved library across sessions",
+  "Unlimited summaries",
+  "All 3 summary modes",
   "Unlimited follow-up questions",
+  "Saved library across sessions",
   "Weekly \"what I learned\" digest",
   "Export to Markdown / Notion",
   "Cross-video topic synthesis",
