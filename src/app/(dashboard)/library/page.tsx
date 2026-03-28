@@ -34,6 +34,13 @@ export default function LibraryPage() {
   const [triage, setTriage] = useState("INBOX");
   const [view, setView] = useState<"grid" | "list">("grid");
   const [sort, setSort] = useState<"newest" | "oldest">("newest");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 200);
+    return () => clearTimeout(timer);
+  }, [search]);
 
   useEffect(() => {
     fetch("/api/summaries")
@@ -48,8 +55,8 @@ export default function LibraryPage() {
   const filtered = summaries
     .filter((s) => {
       if (s.triageState !== triage) return false;
-      if (search) {
-        const q = search.toLowerCase();
+      if (debouncedSearch) {
+        const q = debouncedSearch.toLowerCase();
         return (
           s.title.toLowerCase().includes(q) ||
           s.channel.toLowerCase().includes(q) ||

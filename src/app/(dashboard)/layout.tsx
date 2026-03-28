@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/dashboard/sidebar";
 import { MobileNav } from "@/components/dashboard/mobile-nav";
 import { Topbar } from "@/components/dashboard/topbar";
 import { ToastProvider } from "@/components/ui/toast";
+import { CommandPalette } from "@/components/dashboard/command-palette";
 
 export default function DashboardLayout({
   children,
@@ -41,6 +42,7 @@ export default function DashboardLayout({
           </main>
         </div>
         <MobileNav />
+        <CommandPalette />
       </div>
     </ToastProvider>
   );

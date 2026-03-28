@@ -14,7 +14,10 @@ import {
 import { cn } from "@/lib/utils";
 import { SummaryPanel } from "@/components/dashboard/summary-output";
 import { FollowUpChat } from "@/components/dashboard/follow-up-chat";
+import { GenerationProgress } from "@/components/dashboard/generation-progress";
 import { formatDuration } from "@/lib/youtube";
+
+type ProgressStep = "fetching" | "analysing" | "generating" | "done";
 
 type Mode = "verdict" | "takeaways" | "steps";
 
@@ -82,6 +85,15 @@ export function SummaryFlow({
   const [results, setResults] = useState<Record<string, any>>({});
   const [savedId, setSavedId] = useState<string | null>(null);
   const [showModeInfo, setShowModeInfo] = useState(false);
+  const [progressStep, setProgressStep] = useState<ProgressStep | null>(null);
+  const [previewId, setPreviewId] = useState<string | null>(null);
+
+  // Extract video ID for thumbnail preview as user types
+  useEffect(() => {
+    const ytPattern = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(ytPattern);
+    setPreviewId(match ? match[1] : null);
+  }, [url]);
 
   const doSave = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -167,6 +179,7 @@ export function SummaryFlow({
       setTranscript(null);
       setResults({});
       setSavedId(null);
+      setProgressStep("fetching");
 
       try {
         const res = await fetch("/api/transcript", {
@@ -174,6 +187,8 @@ export function SummaryFlow({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ url: targetUrl }),
         });
+
+        setProgressStep("analysing");
         const data = await res.json();
         if (!res.ok)
           throw new Error(data.error || "Failed to fetch transcript");
@@ -181,11 +196,15 @@ export function SummaryFlow({
         setVideoMeta(data.metadata);
         setTranscript(data.transcript);
         setLoading(false);
+        setProgressStep("generating");
 
         await summarize("verdict", data.metadata, data.transcript);
+        setProgressStep("done");
+        setTimeout(() => setProgressStep(null), 500);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Something went wrong");
         setLoading(false);
+        setProgressStep(null);
       }
     },
     [url, summarize]
@@ -242,6 +261,21 @@ export function SummaryFlow({
         </div>
       </form>
 
+      {/* URL Preview */}
+      {previewId && !videoMeta && !loading && !progressStep && (
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-xl overflow-hidden card-shadow"
+        >
+          <img
+            src={`https://img.youtube.com/vi/${previewId}/mqdefault.jpg`}
+            alt="Video thumbnail"
+            className="w-full aspect-video object-cover"
+          />
+        </motion.div>
+      )}
+
       {/* Error */}
       <AnimatePresence>
         {error && (
@@ -257,16 +291,9 @@ export function SummaryFlow({
         )}
       </AnimatePresence>
 
-      {/* Loading */}
-      {loading && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex flex-col items-center justify-center py-20"
-        >
-          <Loader2 className="w-8 h-8 text-emerald-600 animate-spin mb-4" />
-          <p className="text-sm text-zinc-500">Analysing video...</p>
-        </motion.div>
+      {/* Progress */}
+      {progressStep && progressStep !== "done" && !videoMeta && (
+        <GenerationProgress step={progressStep} />
       )}
 
       {/* Results */}

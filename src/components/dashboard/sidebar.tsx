@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, PlusCircle, Library, Mail, Settings } from "lucide-react";
+import { Home, PlusCircle, Library, Mail, Settings, Search } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
@@ -38,6 +38,16 @@ export function Sidebar() {
           </motion.div>
         </Link>
       </div>
+
+      {/* Search hint */}
+      <button
+        onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
+        className="mx-3 mb-3 flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100/50 transition-colors"
+      >
+        <Search className="w-4 h-4" />
+        <span className="flex-1 text-left">Search...</span>
+        <kbd className="text-[10px] bg-zinc-100 px-1.5 py-0.5 rounded text-zinc-400">⌘K</kbd>
+      </button>
 
       <hr className="border-zinc-200/40 mx-4 mb-2" />
 
