@@ -10,9 +10,9 @@ interface LogoProps {
 
 export function Logo({ className, size = "md", variant = "light" }: LogoProps) {
   const sizes = {
-    sm: { text: "text-lg", icon: "w-5 h-5", triangle: "4,2 4,8 8,5" },
-    md: { text: "text-xl", icon: "w-6 h-6", triangle: "4.5,2 4.5,9 9,5.5" },
-    lg: { text: "text-2xl", icon: "w-7 h-7", triangle: "5,2.5 5,9.5 10,6" },
+    sm: { text: "text-lg", icon: "w-5 h-5", triangle: "4.5,2.5 4.5,9.5 9.5,6" },
+    md: { text: "text-xl", icon: "w-6 h-6", triangle: "4.5,2.5 4.5,9.5 9.5,6" },
+    lg: { text: "text-2xl", icon: "w-7 h-7", triangle: "4.5,2.5 4.5,9.5 9.5,6" },
   };
 
   const s = sizes[size];
@@ -38,7 +38,7 @@ export function Logo({ className, size = "md", variant = "light" }: LogoProps) {
         s.text,
         isDark ? "text-white" : "text-zinc-900"
       )}>
-        re<span className={isDark ? "text-emerald-400 italic" : "text-emerald-600 italic"}>call</span>
+        re<span className={isDark ? "text-emerald-400" : "text-emerald-600"}>call</span>
       </span>
     </div>
   );

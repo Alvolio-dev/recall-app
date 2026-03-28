@@ -167,7 +167,7 @@ export function SummaryFlow({
       if (!targetUrl) return;
 
       // Client-side URL validation
-      const ytPattern = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)[a-zA-Z0-9_-]{11}/;
+      const ytPattern = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/live\/|youtube\.com\/shorts\/)[a-zA-Z0-9_-]{11}/;
       if (!ytPattern.test(targetUrl) && !/^[a-zA-Z0-9_-]{11}$/.test(targetUrl)) {
         setError("That doesn't look like a YouTube URL. Try pasting a link like youtube.com/watch?v=...");
         return;
