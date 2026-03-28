@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 import {
   PlusCircle,
   Clock,
@@ -18,6 +19,8 @@ import { CountUp } from "@/components/ui/count-up";
 type Summary = Record<string, any>;
 
 export default function DashboardPage() {
+  const { user } = useUser();
+  const firstName = user?.firstName || "there";
   const [summaries, setSummaries] = useState<Summary[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -129,7 +132,7 @@ export default function DashboardPage() {
     <div className="max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-xl font-semibold text-zinc-900">Dashboard</h1>
+          <h1 className="text-xl font-semibold text-zinc-900">Hey, {firstName}</h1>
           <p className="text-sm text-zinc-400 mt-0.5">
             Here is what you have been learning.
           </p>

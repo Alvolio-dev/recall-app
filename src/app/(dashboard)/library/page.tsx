@@ -102,22 +102,29 @@ export default function LibraryPage() {
       </div>
 
       {/* Triage tabs */}
-      <div className="flex gap-1 mb-6 p-1 bg-zinc-100 rounded-xl w-fit">
-        {triageTabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setTriage(tab.id)}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-              triage === tab.id
-                ? "bg-white text-zinc-900 shadow-sm"
-                : "text-zinc-500 hover:text-zinc-900"
-            )}
-          >
-            <tab.icon className="w-3.5 h-3.5" />
-            {tab.label}
-          </button>
-        ))}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="flex gap-1 p-1 bg-zinc-100 rounded-xl">
+          {triageTabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setTriage(tab.id)}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                triage === tab.id
+                  ? "bg-white text-zinc-900 shadow-sm"
+                  : "text-zinc-500 hover:text-zinc-900"
+              )}
+            >
+              <tab.icon className="w-3.5 h-3.5" />
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        <span className="text-[11px] text-zinc-400 hidden sm:inline">
+          {triage === "INBOX" && "New summaries land here"}
+          {triage === "LATER" && "Saved to revisit"}
+          {triage === "ARCHIVE" && "Done, out of the way"}
+        </span>
       </div>
 
       {/* Content */}
