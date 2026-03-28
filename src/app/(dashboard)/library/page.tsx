@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle as PlusIcon } from "lucide-react";
-import { Search, LayoutGrid, List, PlusCircle, Clock, Inbox, BookmarkCheck, Archive } from "lucide-react";
+import { Search, LayoutGrid, List, PlusCircle, Clock, Inbox, BookmarkCheck, Archive, ArrowUpDown, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { formatDuration } from "@/lib/youtube";
@@ -33,6 +33,7 @@ export default function LibraryPage() {
   const [search, setSearch] = useState("");
   const [triage, setTriage] = useState("INBOX");
   const [view, setView] = useState<"grid" | "list">("grid");
+  const [sort, setSort] = useState<"newest" | "oldest">("newest");
 
   useEffect(() => {
     fetch("/api/summaries")
@@ -44,26 +45,41 @@ export default function LibraryPage() {
       .catch(() => setLoading(false));
   }, []);
 
-  const filtered = summaries.filter((s) => {
-    if (s.triageState !== triage) return false;
-    if (search) {
-      const q = search.toLowerCase();
-      return (
-        s.title.toLowerCase().includes(q) ||
-        s.channel.toLowerCase().includes(q) ||
-        s.tags.some((t) => t.toLowerCase().includes(q))
-      );
-    }
-    return true;
-  });
+  const filtered = summaries
+    .filter((s) => {
+      if (s.triageState !== triage) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        return (
+          s.title.toLowerCase().includes(q) ||
+          s.channel.toLowerCase().includes(q) ||
+          s.tags.some((t: string) => t.toLowerCase().includes(q))
+        );
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      const da = new Date(a.createdAt).getTime();
+      const db = new Date(b.createdAt).getTime();
+      return sort === "newest" ? db - da : da - db;
+    });
 
   return (
     <div className="max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-zinc-900">Library</h1>
+        <h1 className="text-xl font-semibold text-zinc-900">Library</h1>
         <div className="flex items-center gap-2">
           <button
+            onClick={() => setSort(sort === "newest" ? "oldest" : "newest")}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-zinc-200 text-xs font-medium text-zinc-500 hover:text-zinc-900 transition-colors"
+            aria-label={`Sort by ${sort === "newest" ? "oldest" : "newest"} first`}
+          >
+            <ArrowUpDown className="w-3.5 h-3.5" />
+            {sort === "newest" ? "Newest" : "Oldest"}
+          </button>
+          <button
             onClick={() => setView("grid")}
+            aria-label="Grid view"
             className={cn(
               "p-2 rounded-lg border transition-colors",
               view === "grid"
@@ -75,6 +91,7 @@ export default function LibraryPage() {
           </button>
           <button
             onClick={() => setView("list")}
+            aria-label="List view"
             className={cn(
               "p-2 rounded-lg border transition-colors",
               view === "list"
@@ -183,19 +200,25 @@ export default function LibraryPage() {
                     )}
                   </div>
                   <div className="p-4">
-                    <h3 className="text-sm font-semibold text-zinc-900 line-clamp-2 group-hover:text-emerald-600 transition-colors">
-                      {summary.title}
-                    </h3>
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="text-sm font-semibold text-zinc-900 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+                        {summary.title}
+                      </h3>
+                      {summary.isFavorite && (
+                        <Heart className="w-3.5 h-3.5 text-red-400 fill-current flex-shrink-0 mt-0.5" />
+                      )}
+                    </div>
                     <p className="text-xs text-zinc-400 mt-1">{summary.channel}</p>
                     {summary.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-2">
-                        {summary.tags.slice(0, 3).map((tag) => (
-                          <span
+                        {summary.tags.slice(0, 3).map((tag: string) => (
+                          <button
                             key={tag}
-                            className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-500"
+                            onClick={(e) => { e.preventDefault(); setSearch(tag); }}
+                            className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-500 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
                           >
                             {tag}
-                          </span>
+                          </button>
                         ))}
                       </div>
                     )}

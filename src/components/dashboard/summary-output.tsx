@@ -2,8 +2,38 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Star, ListOrdered, ChevronLeft, ChevronRight } from "lucide-react";
+import { Sparkles, Star, ListOrdered, ChevronLeft, ChevronRight, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-zinc-600 transition-colors px-2 py-1 rounded-md hover:bg-zinc-100"
+      aria-label="Copy to clipboard"
+    >
+      {copied ? (
+        <>
+          <Check className="w-3 h-3 text-emerald-500" />
+          <span className="text-emerald-500">Copied</span>
+        </>
+      ) : (
+        <>
+          <Copy className="w-3 h-3" />
+          Copy
+        </>
+      )}
+    </button>
+  );
+}
 
 interface VerdictData {
   text: string;
@@ -26,13 +56,16 @@ interface StepsData {
 export function VerdictOutput({ data }: { data: VerdictData }) {
   return (
     <div>
-      <div className="flex items-center gap-2 mb-5">
-        <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center">
-          <Sparkles className="w-3 h-3 text-emerald-600" />
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center">
+            <Sparkles className="w-3 h-3 text-emerald-600" />
+          </div>
+          <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">
+            Verdict
+          </p>
         </div>
-        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">
-          Verdict
-        </p>
+        <CopyButton text={`${data.text}\n\nCovers: ${data.tags.join(", ")}`} />
       </div>
       <p className="text-[15px] text-zinc-800 leading-relaxed mb-5">
         {data.text}
@@ -74,9 +107,11 @@ export function TakeawaysOutput({ data }: { data: TakeawaysData }) {
           </p>
         </div>
         <div className="flex items-center gap-1">
+          <CopyButton text={data.items.map((item, i) => `${i + 1}. ${item.text} (${item.timestamp})`).join("\n")} />
           <button
             onClick={() => setCurrent((c) => Math.max(0, c - 1))}
             disabled={current === 0}
+            aria-label="Previous takeaway"
             className="w-7 h-7 rounded-lg border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-zinc-700 hover:border-zinc-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
@@ -86,6 +121,7 @@ export function TakeawaysOutput({ data }: { data: TakeawaysData }) {
               setCurrent((c) => Math.min(data.items.length - 1, c + 1))
             }
             disabled={current === data.items.length - 1}
+            aria-label="Next takeaway"
             className="w-7 h-7 rounded-lg border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-zinc-700 hover:border-zinc-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <ChevronRight className="w-3.5 h-3.5" />
@@ -117,13 +153,16 @@ export function TakeawaysOutput({ data }: { data: TakeawaysData }) {
 export function StepsOutput({ data }: { data: StepsData }) {
   return (
     <div>
-      <div className="flex items-center gap-2 mb-5">
-        <div className="w-6 h-6 rounded-lg bg-orange-100 flex items-center justify-center">
-          <ListOrdered className="w-3 h-3 text-orange-600" />
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-lg bg-orange-100 flex items-center justify-center">
+            <ListOrdered className="w-3 h-3 text-orange-600" />
+          </div>
+          <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">
+            Action list
+          </p>
         </div>
-        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-zinc-500">
-          Action list
-        </p>
+        <CopyButton text={data.items.map((step, i) => `${i + 1}. ${step}`).join("\n")} />
       </div>
       <div className="space-y-2">
         {data.items.map((step, i) => (

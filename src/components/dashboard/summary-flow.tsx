@@ -154,6 +154,13 @@ export function SummaryFlow({
       const targetUrl = url.trim();
       if (!targetUrl) return;
 
+      // Client-side URL validation
+      const ytPattern = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)[a-zA-Z0-9_-]{11}/;
+      if (!ytPattern.test(targetUrl) && !/^[a-zA-Z0-9_-]{11}$/.test(targetUrl)) {
+        setError("That doesn't look like a YouTube URL. Try pasting a link like youtube.com/watch?v=...");
+        return;
+      }
+
       setLoading(true);
       setError(null);
       setVideoMeta(null);
@@ -210,13 +217,16 @@ export function SummaryFlow({
           <div className="pl-5 text-zinc-400">
             <Globe className="w-5 h-5" />
           </div>
+          <label htmlFor="summary-url" className="sr-only">YouTube URL</label>
           <input
+            id="summary-url"
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://youtube.com/watch?v=..."
             className="flex-1 min-w-0 bg-transparent px-4 py-4 text-base text-zinc-900 placeholder:text-zinc-400 outline-none"
             disabled={loading || summarizing}
+            autoComplete="off"
           />
           <button
             type="submit"
