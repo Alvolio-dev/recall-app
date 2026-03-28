@@ -123,6 +123,17 @@ export default function DashboardPage() {
           <p className="text-xs text-zinc-400 text-center mt-3">
             Works with any YouTube video that has captions
           </p>
+
+          {/* Demo data loader - remove in production */}
+          <button
+            onClick={async () => {
+              await fetch("/api/seed", { method: "POST" });
+              window.location.reload();
+            }}
+            className="mt-6 text-xs text-zinc-400 hover:text-zinc-600 transition-colors underline"
+          >
+            Load demo data
+          </button>
         </motion.div>
       </div>
     );
