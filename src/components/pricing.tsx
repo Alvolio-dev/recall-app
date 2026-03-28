@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { HoverButton } from "@/components/ui/hover-button";
 
@@ -29,6 +30,7 @@ const proFeatures = [
 
 export function Pricing() {
   const [yearly, setYearly] = useState(false);
+  const { isSignedIn } = useUser();
 
   return (
     <section id="pricing" className="relative py-24 px-6">
@@ -94,7 +96,7 @@ export function Pricing() {
               <span className="text-sm text-zinc-400">forever</span>
             </div>
             <div className="h-5 mb-5" />
-            <Link href="/try" className="block w-full py-3 rounded-xl text-sm font-medium bg-white border border-zinc-200 text-zinc-900 hover:bg-zinc-50 transition-colors mb-6 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
+            <Link href={isSignedIn ? "/new" : "/try"} className="block w-full py-3 rounded-xl text-sm font-medium bg-white border border-zinc-200 text-zinc-900 hover:bg-zinc-50 transition-colors mb-6 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
               Start summarising
             </Link>
             <div className="space-y-3">

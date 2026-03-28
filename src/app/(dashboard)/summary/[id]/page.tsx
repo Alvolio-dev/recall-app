@@ -55,6 +55,7 @@ export default function SummaryDetailPage() {
   const [loading, setLoading] = useState(true);
   const [activeMode, setActiveMode] = useState<Mode>("verdict");
   const [exporting, setExporting] = useState(false);
+  const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
     fetch(`/api/summaries/${params.id}`)
@@ -86,6 +87,49 @@ export default function SummaryDetailPage() {
       const updated = await res.json();
       setSummary(updated);
       if (message) toast(message);
+    }
+  };
+
+  const handleModeClick = async (mode: Mode) => {
+    if (!summary) return;
+    if (summary[mode]) {
+      setActiveMode(mode);
+      return;
+    }
+    // Generate this mode if it doesn't exist yet
+    if (!summary.transcript) {
+      toast("No transcript available to generate this mode", "error");
+      return;
+    }
+    setActiveMode(mode);
+    setGenerating(true);
+    try {
+      const res = await fetch("/api/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode,
+          title: summary.title,
+          channel: summary.channel,
+          transcript: summary.transcript,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      // Save to API
+      await fetch(`/api/summaries/${summary.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [mode]: data.result }),
+      });
+
+      setSummary({ ...summary, [mode]: data.result });
+      toast("Summary generated");
+    } catch {
+      toast("Failed to generate summary", "error");
+    } finally {
+      setGenerating(false);
     }
   };
 
@@ -243,27 +287,34 @@ export default function SummaryDetailPage() {
           return (
             <button
               key={mode.id}
-              onClick={() => setActiveMode(mode.id)}
-              disabled={!hasData}
+              onClick={() => handleModeClick(mode.id)}
+              disabled={generating}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold border-2 transition-all duration-200",
-                activeMode === mode.id && hasData
+                "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold border-2 transition-all duration-200 disabled:opacity-60",
+                activeMode === mode.id && (hasData || generating)
                   ? modeTabColors[mode.color]
-                  : hasData
-                    ? "bg-white border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-300"
-                    : "bg-zinc-50 border-zinc-100 text-zinc-300 cursor-not-allowed"
+                  : "bg-white border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-300"
               )}
             >
               <mode.icon className="w-4 h-4" />
-              <span className="hidden sm:inline">{mode.label}</span>
+              <span className="hidden sm:inline">{hasData ? mode.label : `Generate ${mode.label.toLowerCase()}`}</span>
             </button>
           );
         })}
       </div>
 
       {/* Summary output */}
+      {generating && !summary[activeMode] && (
+        <div className="flex items-center justify-center py-16 rounded-xl bg-white card-shadow mb-6">
+          <div className="flex flex-col items-center gap-3">
+            <Loader2 className="w-6 h-6 text-emerald-600 animate-spin" />
+            <p className="text-sm text-zinc-500">Generating summary...</p>
+          </div>
+        </div>
+      )}
+
       <AnimatePresence mode="wait">
-        {summary[activeMode] && (
+        {summary[activeMode] && !generating && (
           <motion.div
             key={activeMode}
             initial={{ opacity: 0, y: 8 }}
